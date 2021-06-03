@@ -14,6 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/liy',function(){
-    return "Hello word!";
-})
+Route::get('liy',function(){
+    dd("Hello word!");
+});
