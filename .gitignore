@@ -1,5 +1,7 @@
 /public/storage
 /storage/*.key
+/storage/laravels.conf
+/storage/laravels.pid
 /storage/logs/*.log
 /storage/framework/cache
 /storage/framework/sessions
