@@ -80,7 +80,7 @@
         </div>
     </body>
     <script>
-        var wsServer = 'ws://im.jobslee.top:5200';
+        var wsServer = 'ws://im.jobslee.top/ws';
         var websocket = new WebSocket(wsServer);
         websocket.onopen = function (evt) {
             console.log("Connected to WebSocket server.");
