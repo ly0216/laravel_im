@@ -105,7 +105,7 @@ return [
 
     'inotify_reload' => [
         // Whether enable the Inotify Reload to reload all worker processes when your code is modified.
-        'enable' => env('LARAVELS_INOTIFY_RELOAD', false),
+        'enable' => env('LARAVELS_INOTIFY_RELOAD', true),
 
         // The file path that Inotify watches
         'watch_path' => base_path(),
