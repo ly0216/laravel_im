@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,5 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('liy',function(){
-    dd("Hello word!");
+    return view('im');
+});
+
+Route::get('push',function(){
+    return view('im');
 });

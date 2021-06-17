@@ -99,6 +99,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'swoole' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/swoole.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];
