@@ -40,7 +40,10 @@
         },
         "classmap": [
             "database/seeds",
-            "database/factories"
+            "database/factories",
+            "app/Services",
+            "app/Im"
+
         ]
     },
     "autoload-dev": {

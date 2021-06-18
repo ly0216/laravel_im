@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,6 +14,8 @@ class User extends Authenticatable implements JWTSubject
     public $timestamps = false;
     protected $table = 'user';
     const tableName = 'user';
+
+    const CacheKey = 'bp_user_';
     /**
      * The attributes that are mass assignable.
      *
@@ -52,5 +56,19 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public static function getCacheKey($user_id)
+    {
+        return self::CacheKey . $user_id;
+    }
+
+    public static function getOne($user_id)
+    {
+        return Cache::remember(self::getCacheKey($user_id), env('CACHE_TTL', 300), function () use ($user_id) {
+            return DB::table(self::tableName)->where('id', $user_id)
+                ->where('status', 0)
+                ->where('is_delete', 0)->first();
+        });
     }
 }

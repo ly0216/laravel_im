@@ -8,6 +8,8 @@
 
 namespace App\Services;
 
+use App\Common\Code;
+use App\Im\Common;
 use Hhxsv5\LaravelS\Swoole\WebSocketHandlerInterface;
 use Illuminate\Support\Facades\Log;
 use Swoole\Http\Request;
@@ -23,6 +25,7 @@ class WebSocketService implements WebSocketHandlerInterface
     // Declare constructor without parameters
     public function __construct()
     {
+
     }
     // public function onHandShake(Request $request, Response $response)
     // {
@@ -35,15 +38,25 @@ class WebSocketService implements WebSocketHandlerInterface
         // so Laravel's Request, Auth information are readable, Session is readable and writable, but only in the onOpen event.
         // \Log::info('New WebSocket connection', [$request->fd, request()->all(), session()->getId(), session('xxx'), session(['yyy' => time()])]);
         // The exceptions thrown here will be caught by the upper layer and recorded in the Swoole log. Developers need to try/catch manually.
-        Log::channel('swoole')->info($request->fd);
-        $server->push($request->fd, 'Welcome to LaravelS');
+
+        //$receive_data = $request->getData();
+        //$push_data = Common::checkData($request->fd, $receive_data);
+        $push_data = [
+            'code' => Code::HTTP_SUCCESS,
+            'message' => 'Connection successful',
+            'data' => [
+                'type' => 'connection'
+            ]
+        ];
+        $server->push($request->fd, json_encode($push_data));
     }
 
     public function onMessage(Server $server, Frame $frame)
     {
-        // \Log::info('Received message', [$frame->fd, $frame->data, $frame->opcode, $frame->finish]);
-        // The exceptions thrown here will be caught by the upper layer and recorded in the Swoole log. Developers need to try/catch manually.
-        $server->push($frame->fd, date('Y-m-d H:i:s'));
+        $fd = $frame->fd;
+        $receive_data = $frame->data;
+        $push_data = Common::checkData($fd, $receive_data);
+        $server->push($frame->fd, $push_data);
     }
 
     public function onClose(Server $server, $fd, $reactorId)

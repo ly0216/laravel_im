@@ -65,7 +65,7 @@ class LoginController extends Controller
                     'code' => 0,
                     'message' => 'success',
                     'data' => [
-                        'user_id' => auth('api')->id(),
+                        'user' => auth('api')->id(),
                         'list' => $list
                     ]
                 ]

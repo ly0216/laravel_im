@@ -18,7 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });*/
 
 Route::post('push','SwController@push');
+Route::post('im/get/chatList','SwController@getChatList');
 
 
 Route::post('login','LoginController@login');
 Route::post('me','LoginController@me');
+
