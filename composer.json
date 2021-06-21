@@ -42,7 +42,9 @@
             "database/seeds",
             "database/factories",
             "app/Services",
-            "app/Im"
+            "app/Im",
+            "app/Mysql",
+            "app/Mongodb"
 
         ]
     },

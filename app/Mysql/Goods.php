@@ -31,7 +31,7 @@ class Goods extends Model
     {
         return Cache::remember(self::getCacheKey($goods_id), env('CACHE_TTL', 300), function () use ($goods_id) {
            return  DB::table(self::tableName)
-                ->select('id','price','goods_warehouse_id')
+                ->select('id','price','goods_warehouse_id','mch_id')
                 ->where('id', $goods_id)
                 ->first();
         });

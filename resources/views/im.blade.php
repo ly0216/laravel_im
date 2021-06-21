@@ -47,7 +47,7 @@
             if(data.data.type == 'connection'){
                 let data = {
                     'action': 'checkToken',
-                    'user_id':'13483',
+                    'user_id':'13408',
                     'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9saXkuaW0uY29tXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjIzOTE2MTY2LCJleHAiOjE2MjQwMDI1NjYsIm5iZiI6MTYyMzkxNjE2NiwianRpIjoiMTRzaHd6aWpGZVpKN254cSIsInN1YiI6MTM0ODMsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.Hkx4bnkch253Yx6yx1qU1E14Qn4bXlRDWv92VWJdq0Q'
                 };
                 websocket.send(JSON.stringify(data));
@@ -62,7 +62,7 @@
     $('#check_token_msg').on('click', function () {
         let data = {
             'action': 'checkToken',
-            'user_id':'13483',
+            'user_id':'13408',
             'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9saXkuaW0uY29tXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjIzOTE2MTY2LCJleHAiOjE2MjQwMDI1NjYsIm5iZiI6MTYyMzkxNjE2NiwianRpIjoiMTRzaHd6aWpGZVpKN254cSIsInN1YiI6MTM0ODMsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.Hkx4bnkch253Yx6yx1qU1E14Qn4bXlRDWv92VWJdq0Q'
         };
         websocket.send(JSON.stringify(data));
@@ -71,7 +71,7 @@
     $('#send_data_msg').on('click', function () {
         let data = {
             'action':'sendMessage',
-            'user_id':'13483',
+            'user_id':'13408',
             'message_type':'text',
             'content':'what are you 弄啥类？'
         };

@@ -45,9 +45,10 @@ class Mch extends Model
      */
     public static function getUserMch($user_id)
     {
+        Cache::forget(self::getCacheUserKey($user_id));
         return Cache::remember(self::getCacheUserKey($user_id), env('CACHE_TTL', 300), function () use ($user_id) {
-            return  DB::table(self::tableName)->select('id', 'user_id')
-                ->where('id', $user_id)
+            return  DB::table(self::tableName)
+                ->where('user_id', $user_id)
                 ->where('review_status', 1)
                 ->where('is_reputation', 1)
                 ->first();
