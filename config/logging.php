@@ -105,6 +105,12 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+        'push-message' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/push-message.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];

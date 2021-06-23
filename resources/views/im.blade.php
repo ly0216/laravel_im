@@ -14,19 +14,22 @@
 
     <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
 </head>
+<style>
+    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+    .string { color: green; }
+    .number { color: darkorange; }
+    .boolean { color: blue; }
+    .null { color: magenta; }
+    .key { color: red; }
+</style>
 <body>
-<div class="flex-center position-ref full-height">
 
-    <div class="content">
-        <div class="title m-b-md">
-            Hello Im
-        </div>
+<div class="message-list" style="float: left;margin-left: 50px;margin-top: 20px;width: 75%;">
 
-        <div class="links">
-            <a href="javascript:;" id="check_token_msg">checkToken</a>
-            <a href="javascript:;" id="send_data_msg">sendData</a>
-        </div>
-    </div>
+</div>
+<div class="links" style="float: right;margin-top:50px;margin-right: 50px">
+    <a href="javascript:;" id="check_token_msg">checkToken</a>
+    <a href="javascript:;" id="send_data_msg">sendData</a>
 </div>
 </body>
 <script>
@@ -41,8 +44,9 @@
     };
 
     websocket.onmessage = function (evt) {
-        console.log('Retrieved data from server: ' + evt.data);
+
         let data = JSON.parse(evt.data) ;
+        $('.message-list').append('<pre>'+syntaxHighlight(data)+'</pre>');
         if(data.code == 0){
             if(data.data.type == 'connection'){
                 let data = {
@@ -78,6 +82,27 @@
         websocket.send(JSON.stringify(data));
     });
 
+    function syntaxHighlight(json) {
+        if (typeof json != 'string') {
+            json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
 
 </script>
 </html>

@@ -23,17 +23,20 @@ class GoodsWarehouse extends Model
     /**
      * 获取单个
      * @param $goods_warehouse_id
+     * @param $clear
      * @return mixed
      */
-    public static function getOne($goods_warehouse_id)
+    public static function getOne($goods_warehouse_id, $clear = false)
     {
+        if ($clear) {
+            Cache::forget(self::getCacheKey($goods_warehouse_id));
+        }
         return Cache::remember(self::getCacheKey($goods_warehouse_id), env('CACHE_TTL', 300), function () use ($goods_warehouse_id) {
             return DB::table(self::tableName)
-                ->select('id','name','pic_url','video_url','live_goods','live_goods_status','degree','brand','shop_price','cover_pic','detail')
+                ->select('id', 'name', 'pic_url', 'video_url', 'live_goods', 'live_goods_status', 'degree', 'brand', 'shop_price', 'cover_pic', 'detail')
                 ->where('id', $goods_warehouse_id)->first();
         });
     }
-
 
 
 }

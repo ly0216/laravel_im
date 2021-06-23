@@ -14,10 +14,12 @@ class SwController extends Controller
     }
 
     //
-    public function push()
+    public function push(Request $request)
     {
+        $number = $request->post('number')?:20;
         $user_id = auth('api')->id();
-        $ids = [$user_id];
+        $ids = [13483, 13473, 13471, 13467, 13465];
+        //$ids = [$user_id];
         $fd_list = MemberFd::getFd($ids); //select('fd_id')->whereIn('user_id',$ids)->get();
         $data = [
             'type' => 1,
@@ -26,17 +28,24 @@ class SwController extends Controller
                 'text' => '这特么就是一个测试的消息，没别的意思。就是告诉在坐的各位都是垃圾！'
             ],
             'send_at' => date("Y-m-d H:i:s"),
-            'fd_list' => $fd_list,
-            'ids' => $ids
+            /*'fd_list' => $fd_list,
+            'ids' => $ids*/
         ];
-        $swoole = app('swoole');
-        if ($fd_list) {
-            foreach ($fd_list as $item => $val) {
-                if ($swoole->isEstablished($val['fd_id'])) {
-                    $swoole->push($val['fd_id'], json_encode($data));
+
+        for($i=0;$i<$number;$i++){
+            $fd_list = MemberFd::getFd($ids);
+            if ($fd_list) {
+                $swoole = app('swoole');
+                foreach ($fd_list as $item => $val) {
+                    if ($swoole->isEstablished($val['fd_id'])) {
+                        $data['user_id'] = $val['user_id'];
+                        $swoole->push($val['fd_id'], json_encode($data));
+                    }
                 }
             }
+            //usleep(500000);
         }
+
 
         return response()->json($data);
     }

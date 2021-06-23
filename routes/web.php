@@ -17,7 +17,4 @@ Route::get('/', function () {
 Route::get('liy',function(){
     return view('im');
 });
-
-Route::get('push',function(){
-    return view('im');
-});
+Route::get('test','LoginController@test');

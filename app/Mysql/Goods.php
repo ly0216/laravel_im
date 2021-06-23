@@ -25,18 +25,21 @@ class Goods extends Model
     /**
      * 获取单个
      * @param $goods_id
+     * @param $clear
      * @return mixed
      */
-    public static function getOne($goods_id)
+    public static function getOne($goods_id, $clear = false)
     {
+        if ($clear) {
+            Cache::forget(self::getCacheKey($goods_id));
+        }
         return Cache::remember(self::getCacheKey($goods_id), env('CACHE_TTL', 300), function () use ($goods_id) {
-           return  DB::table(self::tableName)
-                ->select('id','price','goods_warehouse_id','mch_id')
+            return DB::table(self::tableName)
+                ->select('id', 'price', 'goods_warehouse_id', 'mch_id','goods_stock')
                 ->where('id', $goods_id)
                 ->first();
         });
     }
-
 
 
 }

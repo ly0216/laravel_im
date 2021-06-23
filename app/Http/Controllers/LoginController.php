@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Mongodb\ChatGroupLabel;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\CodeCoverage\TestFixture\C;
 
 class LoginController extends Controller
 {
@@ -18,7 +20,7 @@ class LoginController extends Controller
     {
 
         $this->middleware('auth.jwt', ['except' => [
-            'login',
+            'login', 'test'
         ]]);
     }
 
@@ -48,6 +50,21 @@ class LoginController extends Controller
             return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
         }
 
+
+    }
+
+    public function test(Request $request)
+    {
+        try {
+            $idx = $request->get('idx')?:0;
+            $user_list = ['13483', '13473', '13471', '13467', '13465','13408'];
+            $user_id = $user_list[$idx];
+            return view('login.test')->with([
+                'user_id' => strval($user_id)
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
 
     }
 

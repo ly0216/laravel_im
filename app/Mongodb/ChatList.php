@@ -7,16 +7,52 @@ use Jenssegers\Mongodb\Eloquent\Model;
 class ChatList extends Model
 {
     //
+    public $timestamps = false;
     protected $connection = 'mongodb';
     //use SoftDeletes;
     protected $collection = 'txzh_chat_list';
     protected $primaryKey = '_id';    //设置id
+    protected $fillable = [
+        'user_id',
+        'user_ids',
+        'list_id',
+        'status',
+        'type',
+        'goods_id',
+        'top',
+        'top_time' ,
+        'no_reader_num',
+        'ignore',
+        'temporary',
+        'past_time',
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $insert = [
+        'top' => 0,
+        'top_time' => 0,
+        'no_reader_num' => 1,
+        'ignore' => 0,
+        'status' => 0
+    ];
+
+    protected $type = [
+        'user_id' => 'integer',
+        'goods_id' => 'integer',
+        'created_at' => 'integer',
+        'updated_at' => 'integer',
+    ];
 
 
     /** 对话消息类型 */
     public static function chatType($type, $text)
     {
         switch ($type) {
+            case 0:
+                /** 文字 */
+                $last_msg = '[文字]';
+                break;
             case 1:
                 /** 语音 */
                 $last_msg = '[语音]';

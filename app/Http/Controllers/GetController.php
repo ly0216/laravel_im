@@ -6,7 +6,6 @@ use App\Common\Code;
 use App\Mongodb\ChatGroupApply;
 use App\Mongodb\ChatMember;
 use App\Mongodb\FriendApply;
-use App\Mongodb\UserState;
 use App\Mysql\AliLiveAnchor;
 use App\Mysql\GoodsBrand;
 use App\Mysql\Order;

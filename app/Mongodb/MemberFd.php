@@ -16,6 +16,13 @@ class MemberFd extends Model
 
     const CONNECTION = 'mongodb';
     const COLLECTION = 'txzh_member_fd';
+    protected $fillable = [
+        'user_id',
+        'fd_id',
+        'is_delete',
+        'created_at',
+        'updated_at'
+    ];
 
     protected $type = [
         'user_id' => 'integer',
@@ -38,12 +45,12 @@ class MemberFd extends Model
     {
         try {
             $model = DB::connection($this->connection)->collection($this->collection);
-            $has = $model->where('user_id', $user_id)->first();
+            $has = $model->where('user_id', intval($user_id))->first();
             $at = time();
             if (!$has) {
                 $res = $model->insert([
                     'user_id' => intval($user_id),
-                    'fd_id' =>intval($fd),
+                    'fd_id' => intval($fd),
                     'is_delete' => self::DELETE_OFF,
                     'created_at' => $at,
                     'updated_at' => $at
@@ -52,7 +59,7 @@ class MemberFd extends Model
                     return false;
                 }
             } else {
-                $res = $model->where('user_id', $user_id)->update([
+                $res = $model->where('user_id', intval($user_id))->update([
                     'fd_id' => $fd,
                     'updated_at' => $at
                 ]);
@@ -76,7 +83,24 @@ class MemberFd extends Model
     public static function getFd($ids)
     {
         $model = DB::connection(self::CONNECTION)->collection(self::COLLECTION);
-        $list = $model->select('fd_id')->whereIn('user_id', $ids)->get();
+        $list = $model->select('fd_id','user_id')->whereIn('user_id', $ids)->get();
         return $list;
+    }
+
+    /**
+     * 获取单个
+     * @param $user_id
+     * @return int
+     */
+    public static function getOneFd($user_id)
+    {
+        $model = DB::connection(self::CONNECTION)->collection(self::COLLECTION);
+        $fd = $model->select('fd_id')->where('user_id', intval($user_id))->first();
+        if ($fd) {
+            return $fd->fd_id;
+        } else {
+            return 0;
+        }
+
     }
 }

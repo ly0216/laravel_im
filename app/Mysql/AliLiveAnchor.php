@@ -16,7 +16,7 @@ class AliLiveAnchor extends Model
 
     public static function getCacheUserKey($user_id)
     {
-        return self::CacheKey .'user_'.$user_id;
+        return self::CacheKey . 'user_' . $user_id;
     }
 
 
@@ -25,10 +25,11 @@ class AliLiveAnchor extends Model
      * @param $user_id
      * @return mixed
      */
-    public static function getAnchorByUser($user_id){
-        return Cache::remember(self::getCacheUserKey($user_id),env('CACHE_TTL',300),function()use($user_id){
-            return DB::table(self::tableName)->where('user_id',$user_id)
-                ->where('is_delete',0)->where('status',0)->first();
+    public static function getAnchorByUser($user_id)
+    {
+        return Cache::remember(self::getCacheUserKey($user_id), env('CACHE_TTL', 300), function () use ($user_id) {
+            return DB::table(self::tableName)->where('user_id', $user_id)
+                ->where('is_delete', 0)->where('status', 0)->first();
         });
     }
 }
