@@ -19,7 +19,7 @@ class LoginController extends Controller
     public function __construct()
     {
 
-        $this->middleware('auth.jwt', ['except' => [
+        $this->middleware('check.token', ['except' => [
             'login', 'test'
         ]]);
     }

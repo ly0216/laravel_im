@@ -23,7 +23,7 @@ class GoodsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth.jwt')->except(['updateGoods']);
+        $this->middleware('check.token')->except(['updateGoods']);
     }
 
     /**

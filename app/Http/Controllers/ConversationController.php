@@ -14,7 +14,7 @@ class ConversationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth.jwt', ['except' => ['sysCreate']]);
+        $this->middleware('check.token', ['except' => ['sysCreate']]);
     }
 
     /**

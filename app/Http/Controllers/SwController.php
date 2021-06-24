@@ -10,7 +10,7 @@ class SwController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.jwt');
+        $this->middleware('check.token');
     }
 
     //

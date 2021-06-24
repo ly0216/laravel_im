@@ -43,13 +43,15 @@
 </style>
 <body>
 
-<div class="message-list" style="float: left;margin-left: 50px;margin-top: 20px;width: 70%;">
+<div class="message-list" style="float: left;margin-left: 50px;margin-top: 20px;width: 75%;">
 
 </div>
 <div class="links" style="float: right;margin-top:50px;margin-right: 50px">
-    <a href="javascript:;" ><span id="show_message_number">0</span></a>
-    <a href="javascript:;" id="check_token_msg">checkToken</a>
-    <a href="javascript:;" id="send_data_msg">sendData</a>
+    <a href="javascript:;" ><h1><span id="show_message_number">0</span></h1></a>
+    <br>
+    <a href="javascript:;" id="check_token_msg"><h1>checkToken</h1></a>
+    <br>
+    <a href="javascript:;" id="send_data_msg"><h1>sendData</h1></a>
 </div>
 <input type="hidden" id="user_id" value="{{$user_id}}">
 <input type="hidden" id="message_number" value="0">

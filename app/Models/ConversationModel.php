@@ -206,7 +206,7 @@ class ConversationModel extends Model
                 if ($val == $this->to_user_id) {
                     $no_reader_num = 1;
                 }
-                $is_online = 1;
+                $is_online = 0;
                 if ($val == $this->send_user_id) {
                     $is_online = 1;
                 }
