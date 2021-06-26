@@ -15,16 +15,10 @@ class ConversationController extends Controller
 
     public function __construct()
     {
-
-
-        //$this->middleware('check.token', ['except' => ['sysCreate']]);
+        $this->middleware('check.token', ['except' => ['sysCreate']]);
     }
 
-    public static function checkToken( $request){
-        $token = $request->header('Authorization');
-        Log::channel('push-message')->info($token);
 
-    }
     /**
      * 创建会话
      * @param Request $request
@@ -32,15 +26,7 @@ class ConversationController extends Controller
      */
     public function create(Request $request)
     {
-
         try {
-
-            $user = JWTAuth::parseToken()->authenticate();
-            if(!$user){
-                throw new \Exception('登录信息已失效');
-            }
-
-            return response()->json(['code' => Code::HTTP_SUCCESS, 'message' => '会话创建成功', 'data' => ['list_id' => $user->id]]);
             $type = $request->post('type');
             if (!in_array($type, [1, 2, 3, 4, 5, 6])) {
                 throw new \Exception('无效的会话类型');
@@ -53,8 +39,6 @@ class ConversationController extends Controller
             if (!$user_id) {
                 throw new \Exception('登录信息已失效');
             }
-
-            return response()->json(['code' => Code::HTTP_SUCCESS, 'message' => '会话创建成功', 'data' => ['list_id' => $user_id]]);
             $list_id = '';
             switch ($type) {
                 case 1:
@@ -136,7 +120,15 @@ class ConversationController extends Controller
                     $list_id = $cvsModel->temporaryChat();
                     break;
                 case 6:
+                    $union_id = $request->post('union_id');
+                    if(!$union_id){
+                        throw new \Exception('联盟ID不能为空');
+                    }
                     //创建联盟会话
+                    $cvsModel = new ConversationModel();
+                    $cvsModel->send_user_id = $user_id;
+                    $cvsModel->union_id = $union_id;
+                    $list_id = $cvsModel->unionChat();
                     break;
             }
 

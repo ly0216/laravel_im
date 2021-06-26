@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2.5|^8.0",
         "ext-json": "*",
+        "ext-bcmath": "*",
         "fideloper/proxy": "^4.4",
         "hhxsv5/laravel-s": "~3.7.0",
         "jenssegers/mongodb": "3.6.8",

@@ -7,12 +7,15 @@ use App\Mongodb\Chat;
 use App\Mongodb\ChatGroup;
 use App\Mongodb\ChatList;
 use App\Mongodb\ChatMember;
+use App\Mongodb\ChatUnion;
 use App\Mongodb\Friend;
 use App\Mysql\Goods;
 use App\Mysql\Mch;
+use App\Mysql\Union;
 use App\Mysql\UserInfo;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ConversationModel extends Model
@@ -27,6 +30,7 @@ class ConversationModel extends Model
     public $live_notice = '';
     public $live_label = 0;
     public $photo_path = '';
+    public $union_id = 0;
 
     /**
      * 创建客服会话
@@ -513,6 +517,121 @@ class ConversationModel extends Model
         }
     }
 
+
+    /**
+     * 创建联盟会话
+     * @return bool|string
+     */
+    public function unionChat()
+    {
+        try {
+            $union = Union::getOne($this->union_id);
+            if (!$union) {
+                return false;
+            }
+            $list_id = '';
+            if ($union->list_id) {
+                return $union->list_id;
+            } else {
+                $list_id = self::getListId();
+                $up_list_id = DB::table(Union::tableName)->where('id', $union->id)->update([
+                    'list_id' => $list_id,
+                    'updated_at' => date("Y-m-d H:i:s")
+                ]);
+                if (!$up_list_id) {
+                    return false;
+                }
+            }
+            $at = time();
+            $user_list = [intval($this->send_user_id)];
+            $user_list_json = json_encode($user_list);
+            //创建会话
+            //1.创建会话列表
+            $res = ChatList::create([
+                'user_id' => $this->send_user_id,
+                'list_id' => $list_id,
+                'user_ids' => $user_list_json,
+                'status' => 0,
+                'type' => 9,
+                'goods_id' => 0,
+                'top' => 1,
+                'top_time' => 0,
+                'no_reader_num' => 1,
+                'ignore' => 0,
+                'temporary' => 0,
+                'past_time' => 0,
+                'created_at' => $at,
+                'updated_at' => $at
+            ]);
+            if (!$res) {
+                return false;
+            }
+            //2.添加会话成员
+            $resM = ChatMember::create([
+                'list_id' => $list_id,
+                'user_id' => intval($this->send_user_id),
+                'nickname' => '',
+                'is_admin' => 0,
+                'is_msg' => 0,
+                'is_onLine' => 1,
+                'time' => $at,
+                'created_at' => $at,
+                'updated_at' => $at
+            ]);
+            if (!$resM) {
+                return false;
+            }
+            //3.创建联盟
+            $resU = ChatUnion::create([
+                'union_id' => $union->id,
+                'list_id' => $list_id,
+                'union_sn' => $union->union_sn,
+                'title' => $union->title,
+                'slogan' => $union->slogan,
+                'notice' => $union->notice,
+                'leader_user_id' => $union->leader_user_id,
+                'leader_user_name' => $union->leader_user_name,
+                'level' => $union->level,
+                'status' => $union->status,
+                'share_number' => $union->share_number,
+                'max_online_number' => $union->max_online_number,
+                'report_number' => $union->report_number,
+                'violation_number' => $union->violation_number,
+                'unseal_number' => $union->unseal_number,
+                'credit_score' => $union->credit_score,
+                'max_admin_number' => $union->max_admin_number,
+                'max_online_user' => $union->max_online_user,
+                'is_delete' => $union->is_delete,
+                'deleted_at' => $union->deleted_at,
+                'created_at' => $union->created_at,
+                'updated_at' => $union->updated_at,
+            ]);
+            if (!$resU) {
+                return false;
+            }
+            //发送默认系统消息
+            //5.创建系统默认消息
+            Chat::create([
+                'list_id' => $list_id,
+                'user_id' => intval($this->send_user_id),
+                'content_type' => MessagePush::CONTENT_SYS_DEFAULT,
+                'msg_type' => MessagePush::MESSAGE_USER,
+                'content' => [
+                    'text' => $union->slogan ?: $union->notice ?: '欢迎来到《' . $union->title . '》联盟！',
+                ],
+                'time' => $at,
+            ]);
+
+            return $list_id;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    /**
+     * 获取会话列表ID
+     * @return string
+     */
     private static function getListId()
     {
         return md5(uniqid('JWT', true) . rand(1, 100000));
