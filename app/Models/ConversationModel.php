@@ -4,10 +4,16 @@ namespace App\Models;
 
 use App\Im\MessagePush;
 use App\Mongodb\Chat;
+use App\Mongodb\ChatGroup;
 use App\Mongodb\ChatList;
 use App\Mongodb\ChatMember;
 use App\Mongodb\Friend;
+use App\Mysql\Goods;
+use App\Mysql\Mch;
+use App\Mysql\UserInfo;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class ConversationModel extends Model
 {
@@ -17,6 +23,10 @@ class ConversationModel extends Model
     public $goods_type;
     public $goods_id;
     public $mch_id;
+    public $live_name = '';
+    public $live_notice = '';
+    public $live_label = 0;
+    public $photo_path = '';
 
     /**
      * 创建客服会话
@@ -36,7 +46,7 @@ class ConversationModel extends Model
             if ($has) {
                 return $has->list_id;
             }
-            $list_id = md5(uniqid('JWT', true) . rand(1, 100000));
+            $list_id = self::getListId();
             foreach ($user_list as $item => $val) {
                 $no_reader_num = 0;
                 if ($val == $cs_user_id) {
@@ -47,7 +57,7 @@ class ConversationModel extends Model
                     $is_online = 1;
                 }
                 //3.创建会话列表
-                ChatList::create([
+                $res = ChatList::create([
                     'user_id' => $val,
                     'list_id' => $list_id,
                     'user_ids' => $user_list_json,
@@ -63,9 +73,12 @@ class ConversationModel extends Model
                     'created_at' => $at,
                     'updated_at' => $at
                 ]);
+                if (!$res) {
+                    return false;
+                }
 
                 //4.添加会话成员
-                ChatMember::create([
+                $resM = ChatMember::create([
                     'list_id' => $list_id,
                     'user_id' => $val,
                     'nickname' => '',
@@ -76,9 +89,12 @@ class ConversationModel extends Model
                     'created_at' => $at,
                     'updated_at' => $at
                 ]);
+                if (!$resM) {
+                    return false;
+                }
                 //5.添加好友
                 $friend_id = ($cs_user_id == $val) ? $this->send_user_id : $cs_user_id;
-                Friend::create([
+                $resF = Friend::create([
                     'user_id' => intval($val),
                     'friend_id' => intval($friend_id),
                     'from' => 4,
@@ -89,6 +105,9 @@ class ConversationModel extends Model
                     'created_at' => $at,
                     'updated_at' => $at
                 ]);
+                if (!$resF) {
+                    return false;
+                }
             }
             //6.发送欢迎语--消息入库
             $content = [
@@ -124,17 +143,17 @@ class ConversationModel extends Model
             sort($user_list);
             $user_list_json = json_encode($user_list);
             //验证是否是好友
-            $is_friend = Friend::select('user_id','friend_id')
-                ->where('user_id',intval($this->send_user_id))
-                ->where('friend_id',intval($this->to_user_id))->first();
-            if(!$is_friend){
+            $is_friend = Friend::select('user_id', 'friend_id')
+                ->where('user_id', intval($this->send_user_id))
+                ->where('friend_id', intval($this->to_user_id))->first();
+            if (!$is_friend) {
                 return 'no';
             }
             $has = ChatList::select('list_id')->where('user_ids', $user_list_json)->where('user_id', intval($this->send_user_id))->first();
             if ($has) {
                 return $has->list_id;
             }
-            $list_id = md5(uniqid('JWT', true) . rand(1, 100000));
+            $list_id = self::getListId();
             foreach ($user_list as $item => $val) {
                 $no_reader_num = 0;
                 if ($val == $this->to_user_id) {
@@ -145,7 +164,7 @@ class ConversationModel extends Model
                     $is_online = 1;
                 }
                 //3.创建会话列表
-                ChatList::create([
+                $res = ChatList::create([
                     'user_id' => $val,
                     'list_id' => $list_id,
                     'user_ids' => $user_list_json,
@@ -161,9 +180,11 @@ class ConversationModel extends Model
                     'created_at' => $at,
                     'updated_at' => $at
                 ]);
-
+                if (!$res) {
+                    return false;
+                }
                 //4.添加会话成员
-                ChatMember::create([
+                $resM = ChatMember::create([
                     'list_id' => $list_id,
                     'user_id' => $val,
                     'nickname' => '',
@@ -174,50 +195,76 @@ class ConversationModel extends Model
                     'created_at' => $at,
                     'updated_at' => $at
                 ]);
+                if (!$resM) {
+                    return false;
+                }
 
             }
-            return true;
+            return $list_id;
         } catch (\Exception $exception) {
             return false;
         }
     }
 
 
-    public function goodsChat(){
+    /**
+     * 创建商品会话
+     * @return bool|string
+     */
+    public function goodsChat()
+    {
         try {
             $at = time();
-            $user_list = [intval($this->send_user_id), intval($this->to_user_id)];
+            $to_user_id = $this->to_user_id;
+            if ($this->mch_id) {//有mchId则查询商户绑定的用户
+                $mch = Mch::getOne($this->mch_id);
+                if ($mch) {
+                    $to_user_id = $mch->user_id;
+                }
+            }
+            $user_list = [intval($this->send_user_id), intval($to_user_id)];
             sort($user_list);
             $user_list_json = json_encode($user_list);
-            //验证是否是好友
-            $is_friend = Friend::select('user_id','friend_id')
-                ->where('user_id',intval($this->send_user_id))
-                ->where('friend_id',intval($this->to_user_id))->first();
-            if(!$is_friend){
-                return 'no';
-            }
-            $has = ChatList::select('list_id')->where('user_ids', $user_list_json)->where('user_id', intval($this->send_user_id))->first();
+            //验证是否存在会话
+            $has = ChatList::select('list_id')
+                ->where('type', intval($this->goods_type))
+                ->where('user_ids', $user_list_json)
+                ->where('goods_id', intval($this->goods_id))->first();
             if ($has) {
+
                 return $has->list_id;
             }
-            $list_id = md5(uniqid('JWT', true) . rand(1, 100000));
+            Log::channel('push-message')->info('会话不存在,走创建流程');
+            $hasGoods = Goods::getOne($this->goods_id);
+            if (!$hasGoods) {
+
+                return false;
+            }
+            $content_type = MessagePush::CONTENT_GOODS_WANTO;
+            $text = '我想要这个商品';
+            if ($this->goods_type == 5) {
+                $content_type = MessagePush::CONTENT_GOODS_HAVE;
+                $text = '我有这个商品';
+            }
+            $list_id = self::getListId();
+
             foreach ($user_list as $item => $val) {
                 $no_reader_num = 0;
                 if ($val == $this->to_user_id) {
                     $no_reader_num = 1;
                 }
-                $is_online = 0;
+                $is_online = 1;
                 if ($val == $this->send_user_id) {
                     $is_online = 1;
                 }
                 //3.创建会话列表
-                ChatList::create([
+                $res = ChatList::create([
                     'user_id' => $val,
                     'list_id' => $list_id,
                     'user_ids' => $user_list_json,
                     'status' => 0,
-                    'type' => 0,
-                    'goods_id' => 0,
+                    'type' => intval($this->goods_type),
+                    'goods_id' => intval($this->goods_id),
                     'top' => 1,
                     'top_time' => 0,
                     'no_reader_num' => $no_reader_num,
@@ -228,8 +275,11 @@ class ConversationModel extends Model
                     'updated_at' => $at
                 ]);
 
+                if (!$res) {
+                    return false;
+                }
                 //4.添加会话成员
-                ChatMember::create([
+                $resM = ChatMember::create([
                     'list_id' => $list_id,
                     'user_id' => $val,
                     'nickname' => '',
@@ -241,10 +291,230 @@ class ConversationModel extends Model
                     'updated_at' => $at
                 ]);
 
+                if (!$resM) {
+                    return false;
+                }
             }
-            return true;
+            /** 创建系统默认消息 */
+            $chatRow = Chat::create([
+                'list_id' => $list_id,
+                'user_id' => $this->send_user_id,
+                'content_type' => $content_type,
+                'msg_type' => MessagePush::MESSAGE_SYSTEM, //系统消息
+                'content' => [
+                    'text' => $text,
+                    'goods_id' => intval($this->goods_id),
+                ],
+                'time' => $at,
+            ]);
+            $user = User::getOne($this->send_user_id);
+            $userInfo = UserInfo::getOne($this->send_user_id);
+            $content = [
+                'list_id' => $list_id,
+                'data' => [
+                    'type' => MessagePush::MESSAGE_USER,
+                    'msg' => [
+                        'id' => $chatRow->_id,
+                        'type' => $content_type,
+                        'time' => $at,
+                        'user_info' => [
+                            'uid' => intval($this->send_user_id),
+                            'name' => isset($user->nickname) ? $user->nickname : '',
+                            'face' => isset($userInfo->avatar) ? $userInfo->avatar : ''
+                        ],
+                        'content' => ['text' => $text, 'goods_id' => intval($this->goods_id)],
+                    ],
+                ]
+            ];
+            /**
+             * 发送通知
+             */
+            MessagePush::sendToOne($this->to_user_id, 'chatData', $content);
+
+            return $list_id;
         } catch (\Exception $exception) {
             return false;
         }
+    }
+
+
+    /**
+     * 创建直播会话
+     * @return bool|string
+     */
+    public function liveChat()
+    {
+        try {
+            $at = time();
+            $user_list = [intval($this->send_user_id)];
+            $user_list_json = json_encode($user_list);
+            $list_id = self::getListId();
+            //1.创建直播群聊
+            $res = ChatGroup::create([
+                'list_id' => $list_id,
+                'label_id' => $this->live_label,
+                'is_open' => 0,
+                'is_live' => 1,
+                'main_id' => intval($this->send_user_id),
+                'time' => $at,
+                'name' => $this->live_name,
+                'agent_id' => strval(0),
+                'photo_path' => $this->photo_path,
+                'notice' => $this->live_notice,
+                'is_msg' => 0,
+                'is_photo' => 0,
+                'update_time' => $at
+            ]);
+            if (!$res) {
+                return false;
+            }
+            //2.创建会话列表
+            $res = ChatList::create([
+                'user_id' => intval($this->send_user_id),
+                'list_id' => $list_id,
+                'user_ids' => $user_list_json,
+                'status' => 0,
+                'type' => intval($this->goods_type),
+                'goods_id' => intval($this->goods_id),
+                'top' => 1,
+                'top_time' => 0,
+                'no_reader_num' => 0,
+                'ignore' => 0,
+                'temporary' => 0,
+                'past_time' => 0,
+                'created_at' => $at,
+                'updated_at' => $at
+            ]);
+            if (!$res) {
+                return false;
+            }
+            //3.添加会话成员
+            $resM = ChatMember::create([
+                'list_id' => $list_id,
+                'user_id' => intval($this->send_user_id),
+                'nickname' => '',
+                'is_admin' => 0,
+                'is_msg' => 0,
+                'is_onLine' => 1,
+                'time' => $at,
+                'created_at' => $at,
+                'updated_at' => $at
+            ]);
+            if (!$resM) {
+                return false;
+            }
+            /** 创建系统默认消息 */
+            $chatRow = Chat::create([
+                'list_id' => $list_id,
+                'user_id' => $this->send_user_id,
+                'content_type' => 0,
+                'msg_type' => MessagePush::MESSAGE_USER, //系统消息
+                'content' => [
+                    'text' => $this->live_notice,
+                ],
+                'time' => $at,
+            ]);
+
+            return $list_id;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+
+    /**
+     * 创建临时会话
+     * @return bool|string
+     */
+    public function temporaryChat()
+    {
+        try {
+            $at = time();
+            $to_user_id = $this->to_user_id;
+            if ($this->mch_id) {//有mchId则查询商户绑定的用户
+                $mch = Mch::getOne($this->mch_id);
+                if ($mch) {
+                    $to_user_id = $mch->user_id;
+                }
+            }
+            $user_list = [intval($this->send_user_id), intval($to_user_id)];
+            sort($user_list);
+            $user_list_json = json_encode($user_list);
+            //验证是否存在会话
+            $has = ChatList::select('list_id')
+                ->where('type', intval(8))
+                ->where('user_ids', $user_list_json)
+                ->first();
+            if ($has) {
+                return $has->list_id;
+            }
+            //1.创建会话
+            $list_id = self::getListId();
+            foreach ($user_list as $item => $val) {
+                $no_reader_num = 0;
+                if ($val == $this->to_user_id) {
+                    $no_reader_num = 1;
+                }
+                $is_online = 1;
+                if ($val == $this->send_user_id) {
+                    $is_online = 1;
+                }
+                //3.创建会话列表
+                $res = ChatList::create([
+                    'user_id' => $val,
+                    'list_id' => $list_id,
+                    'user_ids' => $user_list_json,
+                    'status' => 0,
+                    'type' => 8,
+                    'goods_id' => 0,
+                    'top' => 1,
+                    'top_time' => 0,
+                    'no_reader_num' => $no_reader_num,
+                    'ignore' => 0,
+                    'temporary' => 1,
+                    'past_time' => intval($at + 180),
+                    'created_at' => $at,
+                    'updated_at' => $at
+                ]);
+                if (!$res) {
+                    return false;
+                }
+                //4.添加会话成员
+                $resM = ChatMember::create([
+                    'list_id' => $list_id,
+                    'user_id' => $val,
+                    'nickname' => '',
+                    'is_admin' => 0,
+                    'is_msg' => 0,
+                    'is_onLine' => $is_online,
+                    'time' => $at,
+                    'created_at' => $at,
+                    'updated_at' => $at
+                ]);
+                if (!$resM) {
+                    return false;
+                }
+
+            }
+            //5.创建系统默认消息
+            $chatRow = Chat::create([
+                'list_id' => $list_id,
+                'user_id' => intval($this->send_user_id),
+                'content_type' => MessagePush::CONTENT_SYS_DEFAULT,
+                'msg_type' => MessagePush::MESSAGE_USER,
+                'content' => [
+                    'text' => '当前为临时对话,3分钟后自动删除',
+                ],
+                'time' => $at,
+            ]);
+            return $list_id;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    private static function getListId()
+    {
+        return md5(uniqid('JWT', true) . rand(1, 100000));
     }
 }

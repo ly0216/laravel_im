@@ -2,20 +2,23 @@
 
 namespace App\Im;
 
-use Tymon\JWTAuth\JWTAuth;
+use Tymon\JWTAuth\JWT;
 
-class VerifyToken extends JWTAuth
+class VerifyToken extends JWT
 {
 
     public function getUser($token)
     {
-        try{
+        try {
             $this->setToken($token);
-            $user = $this->authenticate();
+            $user = $this->parseToken();
             return $user;
-        }catch (\Exception $exception){
-            return $exception->getMessage();
+        } catch (\Exception $exception) {
+            return false;
         }
     }
 
+
 }
+
+

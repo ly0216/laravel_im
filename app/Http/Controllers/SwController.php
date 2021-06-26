@@ -19,7 +19,6 @@ class SwController extends Controller
         $number = $request->post('number')?:20;
         $user_id = auth('api')->id();
         $ids = [13483, 13473, 13471, 13467, 13465];
-        //$ids = [$user_id];
         $fd_list = MemberFd::getFd($ids); //select('fd_id')->whereIn('user_id',$ids)->get();
         $data = [
             'type' => 1,
@@ -33,7 +32,6 @@ class SwController extends Controller
         ];
 
         for($i=0;$i<$number;$i++){
-            $fd_list = MemberFd::getFd($ids);
             if ($fd_list) {
                 $swoole = app('swoole');
                 foreach ($fd_list as $item => $val) {

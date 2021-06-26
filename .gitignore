@@ -12,3 +12,4 @@
 .env.backup
 /tests
 .idea
+/app/Lib

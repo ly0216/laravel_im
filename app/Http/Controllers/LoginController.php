@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Mongodb\ChatGroupLabel;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use SebastianBergmann\CodeCoverage\TestFixture\C;
+
 
 class LoginController extends Controller
 {
@@ -55,7 +53,16 @@ class LoginController extends Controller
 
     public function test(Request $request)
     {
+        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9saXkuaW0uY29tXC9hcGlcL2ltXC9jb252ZXJzYXRpb25cL2NyZWF0ZSIsImlhdCI6MTYyNDY3MTc3MywiZXhwIjoxNjI0NzU4MTczLCJuYmYiOjE2MjQ2NzE3NzMsImp0aSI6InFoZGxkRWJYY1V4UHRrcGwiLCJzdWIiOjEzNDA4LCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.N5g3DGzgD7IKuHbzO6z4L40cJV3zzB_w5jnLLIrkf5U';
+
         try {
+
+            /*$request->headers->set('Authorization', 'Bearer ' .$token);
+            $user = JWTAuth::setToken($token)->parseToken()->authenticate();
+            if (!$user) {
+                return response()->json(['user_not_found'], 404);
+            }
+            return response()->json(['code' => 1, 'message' => $user->id    ]);*/
             $idx = $request->get('idx')?:0;
             $user_list = ['13483', '13473', '13471', '13467', '13465','13408'];
             $user_id = $user_list[$idx];

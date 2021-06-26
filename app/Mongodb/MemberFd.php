@@ -3,7 +3,9 @@
 namespace App\Mongodb;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Jenssegers\Mongodb\Eloquent\Model;
+use function PHPSTORM_META\type;
 
 class MemberFd extends Model
 {
@@ -83,7 +85,7 @@ class MemberFd extends Model
     public static function getFd($ids)
     {
         $model = DB::connection(self::CONNECTION)->collection(self::COLLECTION);
-        $list = $model->select('fd_id','user_id')->whereIn('user_id', $ids)->get();
+        $list = $model->select('fd_id', 'user_id')->whereIn('user_id', $ids)->get();
         return $list;
     }
 
@@ -94,13 +96,16 @@ class MemberFd extends Model
      */
     public static function getOneFd($user_id)
     {
-        $model = DB::connection(self::CONNECTION)->collection(self::COLLECTION);
-        $fd = $model->select('fd_id')->where('user_id', intval($user_id))->first();
-        if ($fd) {
-            return $fd->fd_id;
-        } else {
+        try {
+            $fd_id = 0;
+            $model = DB::connection(self::CONNECTION)->collection(self::COLLECTION);
+            $fd = $model->select('fd_id')->where('user_id', intval($user_id))->first();
+            if ($fd) {
+                $fd_id = $fd['fd_id'];
+            }
+            return $fd_id;
+        } catch (\Exception $exception) {
             return 0;
         }
-
     }
 }

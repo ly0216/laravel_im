@@ -32,6 +32,7 @@ class MessagePush extends Model
     ];
 
 
+    const CONTENT_SYS_DEFAULT = 0;    //会话系统提示消息
     const CONTENT_JOIN_CART = 11;    //成功加入购物车
     const CONTENT_BUY_NOT_PAY = 12;    //拍下未付款
     const CONTENT_ONLINE_PAY = 13;    //在线支付成功 支付宝 微信
@@ -49,6 +50,8 @@ class MessagePush extends Model
     const CONTENT_GOODS_UP = 27;    //上架商品
     const CONTENT_GOODS_DOWN = 28;    //下架商品
     const CONTENT_GOODS_CHANGE = 29;    //商品修改
+    const CONTENT_GOODS_WANTO = 30;    //想要商品
+    const CONTENT_GOODS_HAVE = 31;    //有这个商品
     const CONTENT_AUCTION_BEGIN = 32;    //开始拍卖商品
     const CONTENT_AUCTION_SUCCESS = 33;    //商品拍卖成功--被拍出
     const CONTENT_AUCTION_OFFER = 35;    //竞拍出价
@@ -57,6 +60,7 @@ class MessagePush extends Model
 
 
     static $CONTENT_TYPE_LIST = [
+        self::CONTENT_SYS_DEFAULT => '会话系统提示消息',
         self::CONTENT_JOIN_CART => '成功加入购物车',
         self::CONTENT_BUY_NOT_PAY => '拍下未付款',
         self::CONTENT_ONLINE_PAY => '在线支付成功 支付宝 微信',
@@ -108,7 +112,7 @@ class MessagePush extends Model
             }
             $chat_list = ChatList::select('_id', 'type', 'status')->where('list_id', $list_id)->first();
             if (!$chat_list) {
-                throw new \Exception('没有这条会话，发送消息失败!aaa'.$list_id);
+                throw new \Exception('没有这条会话，发送消息失败!aaa' . $list_id);
             }
 
             $type = self::MESSAGE_USER;
@@ -461,17 +465,27 @@ class MessagePush extends Model
         }
     }
 
-    public static function sendToOne($user_id, $data)
+    /**
+     * 单发消息
+     * @param $user_id
+     * @param $type
+     * @param $data
+     * @return bool
+     */
+    public static function sendToOne($user_id, $type, $data)
     {
         if (!$data || !isset($data['list_id'])) {
             return false;
         }
+        $pushData = [
+            'action' => $type,
+            'data' => $data
+        ];
         $fd_id = MemberFd::getOneFd($user_id);
         if ($fd_id) {
             $swoole = app('swoole');
             if ($swoole->isEstablished($fd_id)) {
-                $swoole->push($fd_id, json_encode($data));
-                Log::channel('push-message')->info('FD:[' . $fd_id . ']');
+                $swoole->push($fd_id, json_encode($pushData));
             }
         }
         return true;

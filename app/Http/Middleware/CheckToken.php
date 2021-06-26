@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Common\Code;
 use Closure;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;

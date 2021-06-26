@@ -47,7 +47,7 @@
 
 </div>
 <div class="links" style="float: right;margin-top:50px;margin-right: 50px">
-    <a href="javascript:;" ><h1><span id="show_message_number">0</span></h1></a>
+    <a href="javascript:;"><h1><span id="show_message_number">0</span></h1></a>
     <br>
     <a href="javascript:;" id="check_token_msg"><h1>checkToken</h1></a>
     <br>
@@ -60,15 +60,23 @@
     let user_id = $("#user_id").val();
     let wsServer = 'ws://liy.im.com/ws';
     let websocket = new WebSocket(wsServer);
-    function reOpen(){
+    let head_check_number = 0;
+    let check_total_number = 100;//心跳检测次数
+    let timeOut = 30000;//心跳检测间隔ms
+
+    function reOpen() {
         websocket.onopen = function (evt) {
             console.log("Connected to WebSocket server.");
+
         };
     }
+
     if (user_id) {
         console.log(user_id);
         websocket.onopen = function (evt) {
             console.log("Connected to WebSocket server.");
+            console.log('head check begin');
+            headCheck(websocket, user_id)
         };
 
         websocket.onclose = function (evt) {
@@ -82,7 +90,7 @@
             let data = JSON.parse(evt.data);
             $('.message-list').prepend('<pre>' + syntaxHighlight(data) + '</pre>');
             let number = $('#message_number').val();
-                number++;
+            number++;
             $('#message_number').val(number);
             $('#show_message_number').text(number);
             if (data.code == 0) {
@@ -102,6 +110,34 @@
         };
     }
 
+    function headCheck(ws, user_id) {
+
+        setTimeout(function () {
+            setCheck(ws, user_id);
+        }, 2000); //这里设置心跳间隔(ms)
+
+    }
+
+    function setCheck(ws, user_id) {
+        console.log('head check init');
+        let data = {
+            'action': 'headCheck',
+            'user_id': user_id,
+        };
+        let interVal = setInterval(() => {
+            head_check_number++;
+            if (head_check_number <= check_total_number) {
+                if (ws.readyState === 1) {
+                    console.log('head check send [' + head_check_number + ']');
+                    ws.send(JSON.stringify(data));
+                }
+
+            } else {
+                clearInterval(interVal);
+                head_check_number = 0;
+            }
+        }, timeOut);
+    }
 
     $('#check_token_msg').on('click', function () {
         let data = {

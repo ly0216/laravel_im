@@ -3,7 +3,6 @@
 namespace App\Im;
 
 use App\Common\Code;
-use App\Mongodb\ChatMember;
 use App\Mongodb\MemberFd;
 use Illuminate\Database\Eloquent\Model;
 use Swoole\Exception;
@@ -35,7 +34,7 @@ class Common extends Model
                 return json_encode(['code' => Code::HTTP_ERROR, 'message' => '无效的用户动作']);
             }
             $action = $data['action'];
-            if ($action == 'checkToken') {
+            if ($action == 'checkToken') {//socket 首次连接成功发送Token校验并绑定用户
                 //socketId 与userId 绑定
                 if (!isset($data['token'])) {
                     return json_encode(['code' => Code::HTTP_ERROR, 'message' => '缺少Token信息']);
@@ -43,7 +42,7 @@ class Common extends Model
                 if (!isset($data['user_id'])) {
                     return json_encode(['code' => Code::HTTP_ERROR, 'message' => '缺少用户信息']);
                 }
-                $token = $data['token'];
+
                 $user_id = $data['user_id'];
                 if (!$user_id) {
                     return json_encode(['code' => Code::HTTP_ERROR, 'message' => '无效的用户信息']);
@@ -53,12 +52,23 @@ class Common extends Model
                 if (!$res) {
                     return json_encode(['code' => Code::HTTP_ERROR, 'message' => '用户绑定失败']);
                 }
+                $return_data['action'] = 'checkToken';
                 $return_data['fd'] = $fd;
+                $return_data['user_id'] = $user_id;
+
+            }elseif($action == 'headCheck'){//socket心跳检测
+                $user_id = $data['user_id'];
+                if (!$user_id) {
+                    return json_encode(['code' => Code::HTTP_ERROR, 'message' => '无效的用户信息']);
+                }
+                $return_data['action'] = 'headCheck';
+                $return_data['fd'] = $fd;
+                $return_data['user_id'] = $user_id;
             }
 
             return json_encode(['code' => Code::HTTP_SUCCESS, 'message' => 'ok', 'data' => $return_data]);
         } catch (Exception $exception) {
-            return json_encode(['code' => Code::HTTP_ERROR, 'message' => $exception->getMessage()]);
+            return json_encode(['code' => Code::HTTP_ERROR, 'message' => $exception->getMessage(),'line'=>$exception->getTrace()]);
         }
 
     }
