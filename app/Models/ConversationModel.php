@@ -31,6 +31,8 @@ class ConversationModel extends Model
     public $live_label = 0;
     public $photo_path = '';
     public $union_id = 0;
+    public $content_type;
+    public $content;
 
     /**
      * 创建客服会话
@@ -635,5 +637,10 @@ class ConversationModel extends Model
     private static function getListId()
     {
         return md5(uniqid('JWT', true) . rand(1, 100000));
+    }
+
+
+    public function sendText(){
+
     }
 }

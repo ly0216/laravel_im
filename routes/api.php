@@ -44,5 +44,5 @@ Route::post('im/goods/updateGoods','GoodsController@updateGoods');
 
 //Conversation 会话管理
 Route::post('im/conversation/create','ConversationController@create');
-Route::post('im/conversation/send','ConversationController@send');
+Route::post('im/message/textMsg','ConversationController@sendMessage');
 

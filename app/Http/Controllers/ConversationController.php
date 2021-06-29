@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Common\Code;
+use App\Im\Common;
 use App\Models\ConversationModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Tymon\JWTAuth\Facades\JWTAuth;
+
 class ConversationController extends Controller
 {
     /**
@@ -121,7 +121,7 @@ class ConversationController extends Controller
                     break;
                 case 6:
                     $union_id = $request->post('union_id');
-                    if(!$union_id){
+                    if (!$union_id) {
                         throw new \Exception('联盟ID不能为空');
                     }
                     //创建联盟会话
@@ -135,6 +135,35 @@ class ConversationController extends Controller
             return response()->json(['code' => Code::HTTP_SUCCESS, 'message' => '会话创建成功', 'data' => ['list_id' => $list_id]]);
         } catch (\Exception $exception) {
             return response()->json(['code' => Code::HTTP_ERROR, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 发送消息
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendMessage(Request $request)
+    {
+        try {
+            $list_id = $request->post('list_id');
+            $content_type = $request->post('content_type') ?: 0;
+            $content = $request->post('content');
+            if (!$list_id || !$content_type) {
+                return response()->json(['err' => Code::HTTP_ERROR, 'msg' => '缺少参数']);
+            }
+            if (!Common::is_json($content)) {
+                return response()->json(['err' => Code::HTTP_ERROR, 'msg' => '参数格式错误']);
+            }
+            $user_id = auth('api')->id();
+            $cvsModel = new ConversationModel();
+            $cvsModel->send_user_id = $user_id;
+            $cvsModel->content_type = $content_type;
+            $cvsModel->content = $content;
+            $msg_id = $cvsModel->sendText();
+            return response()->json(['err' => Code::HTTP_SUCCESS, 'msg' => '消息发送成功', 'data' => [$msg_id]]);
+        } catch (\Exception $exception) {
+            return response()->json(['err' => Code::HTTP_ERROR, 'msg' => '消息发送失败']);
         }
     }
 }
