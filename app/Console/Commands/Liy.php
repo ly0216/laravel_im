@@ -49,8 +49,24 @@ class Liy extends Command
         }*/
         //self::showMessage();
         //$this->pushMessage();
-        echo base_path('app/Http');
+        //echo base_path('app/Http');
+        $this->liy();
         return true;
+    }
+
+    public function liy(){
+        echo "   _                  _        __      __ \n";
+        echo "  | |                | |       \ \    / / \n";
+        echo "  | |                | |        \ \  / /  \n";
+        echo "  | |                | |         \ \/ /     \n";
+        echo "  | |                | |          |  |     \n";
+        echo "  | |                | |          |  |     \n";
+        echo "  | |                | |          |  |     \n";
+        echo "  | |________        | |          |  |     \n";
+        echo "  |__________|       |_|          |__|     \n";
+
+
+
     }
 
 

@@ -10,7 +10,9 @@ html, body {
 .full-height {
     height: 100vh;
 }
-
+.login-height {
+    height: 70vh;
+}
 .flex-center {
     align-items: center;
     display: flex;
@@ -35,16 +37,40 @@ html, body {
     font-size: 84px;
 }
 
+.links{
+    background-color: antiquewhite;
+    border-radius: 5px;
+    height: 46px;
+    align-content: center;
+}
 .links > a {
-    color: #636b6f;
+    color: #fbfbfb;
     padding: 0 25px;
-    font-size: 13px;
+    font-size: 22px;
     font-weight: 600;
     letter-spacing: .1rem;
     text-decoration: none;
     text-transform: uppercase;
+    line-height: 46px;
 }
 
 .m-b-md {
     margin-bottom: 30px;
 }
+
+.top20{
+    margin-top: 20%;
+}
+
+.div-w180{
+    width: 180px;
+}
+.top_tip{
+    padding-top: 10px;
+    background-color: aliceblue;
+    line-height: 36px;
+    text-align: center;
+    display: none;
+    color: #e50012;
+}
+

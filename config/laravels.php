@@ -111,7 +111,7 @@ return [
         'watch_path' => base_path(),
 
         // The file types that Inotify watches
-        'file_types' => ['.php'],
+        'file_types' => ['.php','.css','.js'],
 
         // The excluded/ignored directories that Inotify watches
         'excluded_dirs' => [],
