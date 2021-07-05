@@ -20,4 +20,7 @@ Route::get('/login', function () {
 Route::get('liy',function(){
     return view('im');
 });
+Route::get('tag',function(){
+    echo "tag";
+});
 Route::get('test','LoginController@test');
