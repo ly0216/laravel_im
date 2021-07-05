@@ -21,6 +21,6 @@ Route::get('liy',function(){
     return view('im');
 });
 Route::get('tag',function(){
-    echo "tag";
+    echo "tag-v0.0.3";
 });
 Route::get('test','LoginController@test');
