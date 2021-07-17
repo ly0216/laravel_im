@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mongodb\ChatGroupLabel;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 
 class LoginController extends Controller
@@ -30,18 +31,14 @@ class LoginController extends Controller
     public function login(Request $request)
     {
 
-        $mobile = $request->post('mobile');
-        $token = $request->post('access_token');
-        if (!$mobile || !$token) {
-            return response()->json(['code' => 1, 'message' => '参数错误！']);
-        }
+
         try {
-            $user = User::where('mobile', $mobile)->where('access_token', $token)->first();
-            if (!$user) {
-                return response()->json(['code' => 1, 'message' => '无效的用户！']);
-            }
-            if (!$token = auth('api')->fromUser($user)) {
-                return response()->json(['error' => 'Unauthorized'], 401);
+            $credentials = $request->only('user_name', 'password');
+           /* User::where('id',1)->update([
+                'password'=>bcrypt('123456')
+            ]);*/
+            if (!$token = auth('api')->attempt($credentials)) {
+                return response()->json(['code' => 1, 'message' => '用户名或密码错误']);
             }
             return $this->respondWithToken($token);
         } catch (\Exception $exception) {
@@ -63,8 +60,8 @@ class LoginController extends Controller
                 return response()->json(['user_not_found'], 404);
             }
             return response()->json(['code' => 1, 'message' => $user->id    ]);*/
-            $idx = $request->get('idx')?:0;
-            $user_list = ['13483', '13473', '13471', '13467', '13465','13408'];
+            $idx = $request->get('idx') ?: 0;
+            $user_list = ['13483', '13473', '13471', '13467', '13465', '13408'];
             $user_id = $user_list[$idx];
             return view('login.test')->with([
                 'user_id' => strval($user_id)

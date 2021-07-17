@@ -12,17 +12,17 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     public $timestamps = false;
-    protected $table = 'user';
-    const tableName = 'user';
+    protected $table = 'users';
+    const tableName = 'users';
 
-    const CacheKey = 'bp_user_';
+    const CacheKey = 'liy_users_';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'mobile', 'email', 'password',
+        'user_name', 'email', 'password',
     ];
 
     /**

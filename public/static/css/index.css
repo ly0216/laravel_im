@@ -1,0 +1,93 @@
+body{
+    background-color: #0C0C0C;
+}
+.user_avatar{
+    width: 80px;
+    height: 80px;
+    margin: 20px 20px;
+}
+.user_avatar > img{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+.user_name{
+    position: absolute;
+    top: 15px;
+    left: 120px;
+    width: 120px;
+    height: 38px;
+    line-height: 38px;
+    font-size: 24px;
+    color: #959594;
+}
+
+.user_signature{
+    position: absolute;
+    top: 60px;
+    left: 120px;
+    width: 260px;
+    height: 38px;
+    line-height: 18px;
+    font-size: 14px;
+    color: #959594;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.div_label{
+    position: absolute;
+    top: 115px;
+    height: 90px;
+    width: 100%;
+}
+.day_tag{
+    position:inherit;
+    left:10px;
+    background-color: #00FF00;
+    width: 22%;
+    height: 90px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 90px;
+
+}
+
+.clock{
+    position:inherit;
+    left:27%;
+    background-color: #3d8af2;
+    width: 22%;
+    height: 90px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 90px;
+
+}
+
+.words{
+    position:inherit;
+    left:52%;
+    background-color: #ff6d5e;
+    width: 22%;
+    height: 90px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 90px;
+
+}
+
+.chat{
+    position:inherit;
+    left:76%;
+    background-color: #b55dff;
+    width: 22%;
+    height: 90px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 90px;
+
+}
