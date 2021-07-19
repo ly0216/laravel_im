@@ -1,11 +1,56 @@
 $(document).ready(function(){
 
-    let wsServer = 'ws://liy.ws.com/ws';
-    let webSocket = new WebSocket(wsServer);
-    let token = localStorage.getItem('user_login_access_token');
-    if(!token){
+    layui.use('form', function() {
+        let form = layui.form;
+        let wsServer = 'ws://liy.ws.com/ws';
+        let token = localStorage.getItem('user_login_access_token');
+        if(!token){
+            location.href="/login";
+        }
+        getInfo(token);
+        function getInfo(token){
+            $.ajax({
+                headers: {
+                    Authorization: 'bearer ' + token
+                },
+                method: "POST",
+                url: 'http://liy.ws.com/api/me',
+                dataType: 'json',
+                data: {},
+                success(res) {
+                    if(res.code == 1){
+                        layer.msg(res.message);
+                    }else if(res.code == 1401){
+                        layer.msg('登录信息已过期，请重新登录',function(){
+                            location.href='/login';
+                        });
+                    }else{
+                        /*let field_data = JSON.stringify(data.field);*/
+                        let user = JSON.stringify(res.data);
+                        localStorage.setItem('user_info_data',user);
+                        onShow();
+                    }
+                },
+                error(e) {
+                    console.log(e);
+                }
+            });
+        }
 
-    }
+        function onShow(){
+            let user = localStorage.getItem('user_info_data');
+            let data =  $.parseJSON(user);
+            $('.user_name').html(data.user_nickname);
+            $('.user_signature').html(data.user_signature);
+            $('#user_avatar').attr('src',data.user_avatar);
+            console.log(user,data);
+        }
+
+    });
+
+
+    let webSocket = new WebSocket(wsServer);
+
     webSocket.onopen = function (evt) {
         console.log("Connected to WebSocket server.");
     };

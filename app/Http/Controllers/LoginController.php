@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Common\Code;
 use App\Mongodb\ChatGroupLabel;
 use App\User;
 use Illuminate\Http\Request;
@@ -80,15 +81,16 @@ class LoginController extends Controller
     public function me()
     {
         try {
-            $list = ChatGroupLabel::all();
+            $user = auth('api')->user();
+            unset($user->created_at);
+            unset($user->updated_at);
+            unset($user->email);
+            unset($user->email_verified_at);
             return response()->json(
                 [
-                    'code' => 0,
+                    'code' => Code::HTTP_SUCCESS,
                     'message' => 'success',
-                    'data' => [
-                        'user' => auth('api')->id(),
-                        'list' => $list
-                    ]
+                    'data' => $user
                 ]
             );
         } catch (\Exception $exception) {

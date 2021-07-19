@@ -16,11 +16,15 @@ body{
     position: absolute;
     top: 15px;
     left: 120px;
-    width: 120px;
+    width: 200px;
     height: 38px;
     line-height: 38px;
     font-size: 24px;
     color: #959594;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
 }
 
 .user_signature{
@@ -91,3 +95,80 @@ body{
     line-height: 90px;
 
 }
+
+
+.text_label_day{
+    position: absolute;
+    top: 215px;
+    left: 15px;
+    height: 30px;
+    line-height: 30px;
+    color: #F6F6F6;
+    font-size: 18px;
+    width: 100%;
+
+}
+.label_more{
+    position: inherit;
+    right: 30px;
+    color: #8a9193;
+}
+
+.day_tag_list{
+    position: absolute;
+    top: 260px;
+    height: 200px;
+    width: 100%;
+    text-align: center;
+    color: #8a9193;
+}
+.table_left{
+    position: inherit;
+    left: 10px;
+    height: 200px;
+    width: 30%;
+    border-radius: 10px;
+    background-color: #F6F6F6;
+}
+
+.table_center{
+    position: inherit;
+    left: 35%;
+    height: 200px;
+    width: 30%;
+    border-radius: 10px;
+    background-color: #F6F6F6;
+}
+
+.table_right{
+    position: inherit;
+    left: 68%;
+    height: 200px;
+    width: 30%;
+    border-radius: 10px;
+    background-color: #F6F6F6;
+}
+.content_text{
+    background: rgba(71, 255, 179, 0.1);
+    background-size: 125px 200px;
+    color: #363b3d;
+}
+
+.table_user_avatar{
+    z-index: 1;
+}
+
+
+.table_user_avatar > img{
+    margin-top: 125px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.table_user_name{
+    margin-top: 2px;
+    color: #ffffff;
+}
+
+

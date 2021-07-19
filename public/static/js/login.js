@@ -10,7 +10,8 @@ $(document).ready(function(){
                     Authorization: 'bearer ' + token
                 },
                 method: "POST",
-                url: 'https://im.jobslee.top/api/login',
+                /*url: 'https://im.jobslee.top/api/login',*/
+                url:'http://liy.ws.com/api/login',
                 dataType: 'json',
                 data: data.field,
                 success(res) {
