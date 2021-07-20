@@ -18,6 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('login','LoginController@login');
 Route::post('me','LoginController@me');
+Route::post('get/date','ConversationController@getCnDate');
+
+Route::group(['prefix' => 'home'], function ($router) {
+    Route::post('room/join','HomeController@joinRoom');
+    Route::post('send/message','HomeController@send');
+});
 
 
 

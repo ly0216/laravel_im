@@ -13,6 +13,14 @@ class Common extends Model
      * IM 消息公共处理类
      */
 
+
+    public static function setUserFd($user_id, $fd)
+    {
+        $memberFd = new MemberFd();
+        $res = $memberFd->setMemberFd($user_id, $fd);
+        return $res;
+    }
+
     /**
      * 接收所有消息-验证并处理后续逻辑
      * @param $fd
@@ -24,57 +32,29 @@ class Common extends Model
         try {
             $return_data = [];
             if (!$fd || !$receive_data) {
-                return json_encode(['code' => Code::HTTP_ERROR, 'message' => '缺少参数']);
+                return json_encode(['action' => 'error', 'message' => '缺少参数']);
             }
             if (!self::is_json($receive_data)) {
-                return json_encode(['code' => Code::HTTP_ERROR, 'message' => '报文数据格式错误']);
+                return json_encode(['action' => 'error', 'message' => '报文数据格式错误']);
             }
             $data = json_decode($receive_data, true);
             if (!isset($data['action'])) {
-                return json_encode(['code' => Code::HTTP_ERROR, 'message' => '无效的用户动作']);
+                return json_encode(['action' => 'error', 'message' => '无效的用户动作']);
             }
             $action = $data['action'];
-            if ($action == 'checkToken') {//socket 首次连接成功发送Token校验并绑定用户
-                //socketId 与userId 绑定
-                if (!isset($data['token'])) {
-                    return json_encode(['code' => Code::HTTP_ERROR, 'message' => '缺少Token信息']);
-                }
-                if (!isset($data['user_id'])) {
-                    return json_encode(['code' => Code::HTTP_ERROR, 'message' => '缺少用户信息']);
-                }
-
-                $user_id = $data['user_id'];
-                if (!$user_id) {
-                    return json_encode(['code' => Code::HTTP_ERROR, 'message' => '无效的用户信息']);
-                }
-                $memberFd = new MemberFd();
-                $res = $memberFd->setMemberFd($user_id, $fd);
-                if (!$res) {
-                    return json_encode(['code' => Code::HTTP_ERROR, 'message' => '用户绑定失败']);
-                }
-                $return_data['action'] = 'checkToken';
-                $return_data['fd'] = $fd;
-                $return_data['user_id'] = $user_id;
-
-            }elseif($action == 'headCheck'){//socket心跳检测
-                $user_id = $data['user_id'];
-                if (!$user_id) {
-                    return json_encode(['code' => Code::HTTP_ERROR, 'message' => '无效的用户信息']);
-                }
-                $return_data['action'] = 'headCheck';
-                $return_data['fd'] = $fd;
-                $return_data['user_id'] = $user_id;
+            if ($action == 'ping') {//socket心跳检测
+                $return_data['action'] = 'ping';
             }
 
-            return json_encode(['code' => Code::HTTP_SUCCESS, 'message' => 'ok', 'data' => $return_data]);
+            return json_encode($return_data);
         } catch (Exception $exception) {
-            return json_encode(['code' => Code::HTTP_ERROR, 'message' => $exception->getMessage(),'line'=>$exception->getTrace()]);
+            return json_encode(['action' => 'error', 'message' => $exception->getMessage()]);
         }
 
     }
 
 
-    public static function messageType($type , $nickname , $content)
+    public static function messageType($type, $nickname, $content)
     {
         $title = $nickname;
 

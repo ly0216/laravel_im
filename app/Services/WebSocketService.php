@@ -41,14 +41,23 @@ class WebSocketService implements WebSocketHandlerInterface
 
         //$receive_data = $request->getData();
         //$push_data = Common::checkData($request->fd, $receive_data);
-        $push_data = [
-            'code' => Code::HTTP_SUCCESS,
-            'message' => 'Connection successful',
-            'data' => [
-                'type' => 'connection'
-            ]
-        ];
-        $server->push($request->fd, json_encode($push_data));
+        $user_id = auth('api')->id();
+        if ($user_id) {
+            Common::setUserFd($user_id, $request->fd);
+            $push_data = [
+                'action' => 'ping',
+                'data' => $request->fd
+            ];
+            $server->push($request->fd, json_encode($push_data));
+
+        } else {
+            $push_data = [
+                'action' => 'login'
+            ];
+            $server->push($request->fd, json_encode($push_data));
+        }
+
+
     }
 
     public function onMessage(Server $server, Frame $frame)

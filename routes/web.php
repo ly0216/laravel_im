@@ -1,5 +1,7 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,4 +22,8 @@ Route::get('/login', function () {
 Route::get('/home/index', function () {
     return view('home.index');
 });
-Route::get('test','LoginController@test');
+
+Route::get('/home/room/{chat_sn?}', function ($chat_sn = 1) {
+    return view('home.room', ['chat_sn' => $chat_sn]);
+});
+Route::get('test', 'LoginController@test');

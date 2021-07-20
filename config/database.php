@@ -94,7 +94,7 @@ return [
             'driver'   => 'mongodb',
             'host'     => 'localhost',
             'port'     => 27017,
-            'database' => 'im',
+            'database' => 'liy_im',
             'username' => '',
             'password' => '',
         ],

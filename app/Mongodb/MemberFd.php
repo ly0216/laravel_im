@@ -17,7 +17,7 @@ class MemberFd extends Model
 
 
     const CONNECTION = 'mongodb';
-    const COLLECTION = 'txzh_member_fd';
+    const COLLECTION = 'liy_member_fd';
     protected $fillable = [
         'user_id',
         'fd_id',
@@ -48,7 +48,7 @@ class MemberFd extends Model
         try {
             $model = DB::connection($this->connection)->collection($this->collection);
             $has = $model->where('user_id', intval($user_id))->first();
-            $at = time();
+            $at = date("Y-m-d H:i:s");
             if (!$has) {
                 $res = $model->insert([
                     'user_id' => intval($user_id),
@@ -62,7 +62,7 @@ class MemberFd extends Model
                 }
             } else {
                 $res = $model->where('user_id', intval($user_id))->update([
-                    'fd_id' => $fd,
+                    'fd_id' => intval($fd),
                     'updated_at' => $at
                 ]);
                 if (!$res) {

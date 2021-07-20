@@ -15,7 +15,6 @@ body{
 .user_name{
     position: absolute;
     top: 15px;
-    left: 120px;
     width: 200px;
     height: 38px;
     line-height: 38px;
@@ -30,7 +29,6 @@ body{
 .user_signature{
     position: absolute;
     top: 60px;
-    left: 120px;
     width: 260px;
     height: 38px;
     line-height: 18px;
@@ -49,10 +47,7 @@ body{
     width: 100%;
 }
 .day_tag{
-    position:inherit;
-    left:10px;
     background-color: #00FF00;
-    width: 22%;
     height: 90px;
     border-radius: 10px;
     text-align: center;
@@ -61,10 +56,8 @@ body{
 }
 
 .clock{
-    position:inherit;
-    left:27%;
+
     background-color: #3d8af2;
-    width: 22%;
     height: 90px;
     border-radius: 10px;
     text-align: center;
@@ -73,10 +66,7 @@ body{
 }
 
 .words{
-    position:inherit;
-    left:52%;
     background-color: #ff6d5e;
-    width: 22%;
     height: 90px;
     border-radius: 10px;
     text-align: center;
@@ -85,10 +75,7 @@ body{
 }
 
 .chat{
-    position:inherit;
-    left:76%;
     background-color: #b55dff;
-    width: 22%;
     height: 90px;
     border-radius: 10px;
     text-align: center;
@@ -98,77 +85,79 @@ body{
 
 
 .text_label_day{
-    position: absolute;
-    top: 215px;
-    left: 15px;
+
     height: 30px;
     line-height: 30px;
     color: #F6F6F6;
     font-size: 18px;
-    width: 100%;
 
 }
 .label_more{
-    position: inherit;
-    right: 30px;
-    color: #8a9193;
-}
-
-.day_tag_list{
-    position: absolute;
-    top: 260px;
-    height: 200px;
-    width: 100%;
     text-align: center;
     color: #8a9193;
 }
-.table_left{
-    position: inherit;
-    left: 10px;
-    height: 200px;
-    width: 30%;
-    border-radius: 10px;
-    background-color: #F6F6F6;
-}
 
-.table_center{
-    position: inherit;
-    left: 35%;
-    height: 200px;
-    width: 30%;
-    border-radius: 10px;
-    background-color: #F6F6F6;
-}
 
-.table_right{
-    position: inherit;
-    left: 68%;
+.label_content{
     height: 200px;
-    width: 30%;
+    text-align: center;
     border-radius: 10px;
-    background-color: #F6F6F6;
-}
-.content_text{
     background: rgba(71, 255, 179, 0.1);
     background-size: 125px 200px;
     color: #363b3d;
+    word-break: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 9;
+    overflow: hidden;
+
 }
 
-.table_user_avatar{
-    z-index: 1;
+
+
+
+.content_text{
+    z-index: 999;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    background-color: #F6F6F6;
+}
+.content_image img{
+    width: 100%;
+    height: 150px;
+   /* opacity:0.4;
+    filter:alpha(opacity=40);*/ /* IE8 及其更早版本 */
+}
+
+.label_user_avatar{
+    text-align: center;
+    z-index: 999;
+    margin-top: -75px;
 }
 
 
-.table_user_avatar > img{
-    margin-top: 125px;
+.label_user_avatar > img{
+    z-index: 999;
     width: 50px;
     height: 50px;
     border-radius: 25px;
+
 }
 
-.table_user_name{
+.label_user_name{
+    text-align: center;
+    z-index: 999;
     margin-top: 2px;
-    color: #ffffff;
+    color: #8a9193;
+}
+
+.label_text{
+    z-index:-1;
 }
 
 

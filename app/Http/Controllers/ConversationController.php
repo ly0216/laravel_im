@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Common\Code;
 use App\Im\Common;
 use App\Models\ConversationModel;
+use App\Models\LunarCalendar;
 use Illuminate\Http\Request;
 
 class ConversationController extends Controller
@@ -15,9 +16,16 @@ class ConversationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('check.token', ['except' => ['sysCreate']]);
+        $this->middleware('check.token', ['except' => ['getCnDate']]);
     }
 
+    public function getCnDate()
+    {
+        $week_arr = ["日","一","二","三","四","五","六"];
+        $week = date('w', strtotime('2021-07-19'));
+        $data = LunarCalendar::solarToLunar('2021', '7', '19');
+        return response()->json(['code' => Code::HTTP_SUCCESS, 'message' => '会话创建成功', 'data' => ['week' => $week_arr[$week], 'lunar' => $data]]);
+    }
 
     /**
      * 创建会话

@@ -4,29 +4,36 @@ namespace App\Mongodb;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 
-class ChatMember extends Model
+class PartyList extends Model
 {
     //
     public $timestamps = false;
     protected $connection = 'mongodb';
     //use SoftDeletes;
-    protected $collection = 'txzh_chat_member';
+    const tableName = 'liy_party_list';
+    protected $collection = 'liy_party_list';
     protected $primaryKey = '_id';    //设置id
+
     protected $fillable = [
-        'list_id',
+        'id',
+        'chat_sn',
         'user_id',
-        'nickname',
-        'is_admin',
-        'is_msg',
-        'is_onLine',
-        'time',
+        'user_name',
+        'user_avatar',
+        'title',
+        'content',
+        'online_number',
+        'views',
+        'is_delete',
         'created_at',
         'updated_at'
     ];
+
     protected $type = [
+        'id' => 'integer',
         'user_id' => 'integer',
-        'created_at' => 'integer',
-        'updated_at' => 'integer',
+        'views' => 'integer',
+        'is_delete' => 'integer'
     ];
 
 }
