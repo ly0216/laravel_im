@@ -21,6 +21,180 @@ class HomeController extends Controller
         $this->middleware('check.token');
     }
 
+    /**
+     * 随机加入派对
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function randomJoin( ){
+        try {
+
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $list = PartyList::where('is_delete',0)->where('status',1)->pluck('chat_sn');
+            $number = count($list);
+            $idx = mt_rand(0,($number -1));
+            $chat_sn = $list[$idx];
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $chat_sn]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 创建派对
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createParty(Request $request)
+    {
+        try {
+
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $user = auth('api')->user();
+            if ($user->can_create == 2) {
+                return response()->json(['code' => 1, 'message' => '你还没有创建派对的权限']);
+            }
+            $title = $request->post('title');
+            $content = $request->post('content');
+            $background_image = $request->post('background_image');
+            if (!$title || !$content || !$background_image) {
+                return response()->json(['code' => 1, 'message' => '请将信息填写完整']);
+            }
+            $hasEx = PartyList::where('user_id', intval($user_id))->where('status', 0)->first();
+            if ($hasEx) {
+                return response()->json(['code' => 1, 'message' => '你还有没审核的派对，无法继续创建派对']);
+            }
+            $party_number = PartyList::where('user_id', intval($user_id))->count();
+            if ($party_number > $user->party_limit) {
+                return response()->json(['code' => 1, 'message' => "你最多只能创建{$user->party_limit}个派对"]);
+            }
+            $at = date("Y-m-d H:i:s");
+            $status = 0;
+            if($user->need_examine == 2){
+                $status =1;
+            }
+            $data = [
+                'id' => MongoDB::getTableIdx(PartyList::tableName),
+                'chat_sn' => Common::getChatSn(),
+                'status' => intval($status),
+                'user_id' => intval($user_id),
+                'user_name' => $user->user_nickname,
+                'user_avatar' => $user->user_avatar,
+                'title' => $title,
+                'content' => $content,
+                'background_image' => $background_image,
+                'online_number' => 0,
+                'views' => 0,
+                'is_delete' => 0,
+                'created_at' => $at,
+                'updated_at' => $at
+            ];
+            $res = PartyList::create($data);
+            if (!$res) {
+                return response()->json(['code' => 1, 'message' => '派对创建失败']);
+            }
+
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => []]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 我创建的派对
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function myRoomList(Request $request)
+    {
+        try {
+
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $page = $request->post('page') ?: 1;
+            $skip = ($page - 1) * 20;
+            $list = PartyList::select('*')->where('user_id', intval($user_id))->where('is_delete', 0)
+                ->orderBy('created_at', 'desc')
+                ->skip($skip)->limit(20)->get();
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $list]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 派对列表
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function roomList(Request $request)
+    {
+        try {
+
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $page = $request->post('page') ?: 1;
+            $search_text = $request->post('search_text');
+            $is_hot = $request->post('is_hot') ?: 0;
+            $skip = ($page - 1) * 20;
+            $party = PartyList::select('*')->where('is_delete', 0)->where('status', 1);
+            if ($search_text) {
+                $party->where('title', 'like', "%$search_text%");
+            }
+            $count = $party->count();
+            $pages = ceil($count / 20);
+            if ($is_hot) {
+                $party->orderBy('views', 'desc');
+            }
+            $list = $party->orderBy('created_at', 'desc')
+                ->skip($skip)->limit(20)->get();
+            $return = [
+                'page' => $page,
+                'pages' => $pages,
+                'list' => $list
+            ];
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $return]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 获取派对详情
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function roomDetail(Request $request)
+    {
+        try {
+            $chat_sn = $request->post('chat_sn');
+            if (!$chat_sn) {
+                return response()->json(['code' => 1, 'message' => '缺少参数']);
+            }
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+
+            $party = PartyList::where('chat_sn', $chat_sn)->first();
+            if (!$party) {
+                return response()->json(['code' => 1, 'message' => '派对不存在']);
+            }
+            PartyList::where('chat_sn', $chat_sn)->increment('views', 1);
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $party]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
 
     /**
      * 发送消息
@@ -53,8 +227,9 @@ class HomeController extends Controller
             $at = date("Y-m-d H:i:s");
             $message = [
                 'id' => MongoDB::getTableIdx(PartyMessage::tableName),
-                'action'=>'chatMessage',
+                'action' => 'chatMessage',
                 'party_id' => intval($party->id),
+                'chat_sn' => $party->chat_sn,
                 'user_id' => intval($user_id),
                 'user_name' => $user->user_nickname,
                 'user_avatar' => $user->user_avatar,
@@ -77,7 +252,8 @@ class HomeController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function historyMessage(Request $request){
+    public function historyMessage(Request $request)
+    {
         try {
             $chat_sn = $request->post('chat_sn');
             if (!$chat_sn) {
@@ -93,10 +269,10 @@ class HomeController extends Controller
             if (!$party) {
                 return response()->json(['code' => 1, 'message' => '派对不存在']);
             }
-            $list = PartyMessage::select('*')->where('action','chatMessage')->where('party_id',intval($party->id))
-                ->orderBy('created_at','desc')->limit(20)->get()->toArray();
+            $list = PartyMessage::select('*')->where('action', 'chatMessage')->where('party_id', intval($party->id))
+                ->orderBy('created_at', 'desc')->limit(20)->get()->toArray();
 
-            return response()->json(['code' => 0, 'message' => '成功','data'=>array_reverse($list)]);
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => array_reverse($list)]);
         } catch (\Exception $exception) {
             return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
         }
@@ -129,7 +305,7 @@ class HomeController extends Controller
             $join = PartyMember::where('party_id', intval($party->id))->where('user_id', intval($user_id))->first();
             if (!$join) {
                 PartyMember::create([
-                    'id' => MongoDB::getTableIdx(PartyMember::tableName,true),
+                    'id' => MongoDB::getTableIdx(PartyMember::tableName, true),
                     'party_id' => intval($party->id),
                     'user_id' => intval($user_id),
                     'user_name' => $user->user_nickname,
@@ -151,7 +327,8 @@ class HomeController extends Controller
             //3.发送消息
             $message = [
                 'id' => MongoDB::getTableIdx(PartyMessage::tableName),
-                'action'=>'chatMessage',
+                'action' => 'chatMessage',
+                'chat_sn' => $party->chat_sn,
                 'party_id' => intval($party->id),
                 'user_id' => intval($user_id),
                 'user_name' => $user->user_nickname,

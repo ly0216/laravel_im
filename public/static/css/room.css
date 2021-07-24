@@ -32,6 +32,7 @@ body{
     text-align: center  ;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    text-indent: 10px;
 }
 .bottom_text{
     border-top-left-radius: 5px;
@@ -46,6 +47,7 @@ body{
     font-size: 18px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    text-indent: 10px;
 }
 
 .message_content{
@@ -62,14 +64,21 @@ body{
 }
 
 .chat_user_name{
-    color: #6f6f6f;
+    color: #282626;
     font-size: 18px;
 }
 .chat_message{
-    color: #dadada;
+    color: #232121;
+    display:inline-block;
+    border: 1px solid #F6F6F6;
+    border-radius: 5px;
+    background-color: #F6F6F6;
+    padding: 5px 5px 5px 10px;
+
 }
 .right-message{
-    text-align: right;
+
+    float: right;
 }
 .right-name{
     text-align: right;
@@ -85,4 +94,18 @@ body{
 .bottom_content{
     min-height:15px;
     width: 100%;
+}
+
+.system_message_text{
+    text-align: center;
+    display:inline-block;
+    height: 18px;
+    line-height: 18px;
+    border: 1px solid #F6F6F6;
+    border-radius: 5px;
+    color: #363b3d;
+    background-color: #F6F6F6;
+    filter:alpha(Opacity=90);
+    -moz-opacity:0.8;
+    opacity: 0.8;
 }

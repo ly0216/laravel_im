@@ -15,6 +15,7 @@
     <!-- Javascript -->
     <script type="text/javascript" src="{{asset('static/layui/layui.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('static/js/config.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/room.js')}}"></script>
 
 </head>
@@ -24,10 +25,10 @@
 <div class="layui-container" style="padding: 0;">
     <div class="layui-row">
         <div class="layui-col-xs1">
-            <div class="chat_title">🔙</div>
+            <div class="chat_title click_back">🔙</div>
         </div>
         <div class="layui-col-xs10">
-            <div class="chat_title">💬测试聊天会话</div>
+            <div class="chat_title party_title_text">💬加载中。。。</div>
         </div>
         <div class="layui-col-xs1">
             <div class="chat_title"></div>
@@ -38,7 +39,7 @@
             <div class="layui-row message_content system_message">
                 <div class="layui-col-xs1">&nbsp;</div>
                 <div class="layui-col-xs10">
-                    <div>⚜️欢迎来到测试群聊⚜️</div>
+                    <div class="system_message_text"></div>
                 </div>
                 <div class="layui-col-xs1">&nbsp;</div>
             </div>

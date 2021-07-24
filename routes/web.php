@@ -26,4 +26,7 @@ Route::get('/home/index', function () {
 Route::get('/home/room/{chat_sn?}', function ($chat_sn = 1) {
     return view('home.room', ['chat_sn' => $chat_sn]);
 });
-Route::get('test', 'LoginController@test');
+
+Route::get('/home/party/create', function(){
+    return view('party.create');
+});

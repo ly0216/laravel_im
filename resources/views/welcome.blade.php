@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{{asset('static/css/im.css')}}">
         <!-- Javascript -->
         <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
-        {{--<script type="text/javascript" src="{{asset('static/js/login.js')}}"></script>--}}
+        <script type="text/javascript" src="{{asset('static/js/config.js')}}"></script>
 
     </head>
     <body style="background-color: #0C0C0C;">

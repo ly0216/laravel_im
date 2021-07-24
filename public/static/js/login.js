@@ -1,7 +1,7 @@
 $(document).ready(function(){
     layui.use('form', function(){
         let form = layui.form;
-        let API_URL = 'https://im.jobslee.top/api/';
+        let API_URL = config.API_URL;
         //监听提交
         form.on('submit(signIn)', function(data){
             /*let field_data = JSON.stringify(data.field);*/

@@ -14,6 +14,10 @@ class Common extends Model
      */
 
 
+    public static function getChatSn(){
+        return md5(uniqid('LIYIM', true) . rand(1, 100000));
+    }
+
     public static function setUserFd($user_id, $fd)
     {
         $memberFd = new MemberFd();

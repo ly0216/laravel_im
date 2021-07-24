@@ -14,6 +14,7 @@
     <!-- Javascript -->
     <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/layui/layui.js')}}"></script>
+    <script type="text/javascript" src="{{asset('static/js/config.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/login.js')}}"></script>
 
 </head>

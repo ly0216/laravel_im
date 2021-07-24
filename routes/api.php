@@ -21,9 +21,14 @@ Route::post('me','LoginController@me');
 Route::post('get/date','ConversationController@getCnDate');
 
 Route::group(['prefix' => 'home'], function ($router) {
+    Route::post('room/detail','HomeController@roomDetail');
     Route::post('room/join','HomeController@joinRoom');
     Route::post('room/history/message','HomeController@historyMessage');
     Route::post('send/message','HomeController@send');
+    Route::post('room/list','HomeController@roomList');
+    Route::post('my/room/list','HomeController@myRoomList');
+    Route::post('create/party','HomeController@createParty');
+    Route::post('random/join','HomeController@randomJoin');
 });
 
 

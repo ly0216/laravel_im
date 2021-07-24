@@ -15,6 +15,7 @@
     <!-- Javascript -->
     <script type="text/javascript" src="{{asset('static/layui/layui.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('static/js/config.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/index.js')}}"></script>
 </head>
 
@@ -31,129 +32,39 @@
     </div>
 
     <div class="layui-row layui-col-space10">
-        <div class="layui-col-xs4 ">
-            <div class="day_tag">派对列表</div>
+        <div class="layui-col-xs4" id="create_party">
+            <div class="day_tag">创建派对</div>
         </div>
-        <div class="layui-col-xs4 ">
-            <div class="words">我的派对</div>
+        <div class="layui-col-xs4" id="party_list">
+            <div class="words">派对列表</div>
         </div>
-        <div class="layui-col-xs4 rand-party">
+        <div class="layui-col-xs4" id="rand_party">
             <div class="chat">随机匹配</div>
         </div>
     </div>
     <div class="layui-row">
         <div class="layui-col-xs12 text_label_day">
-            🎉开心派对
+            热门派对
         </div>
     </div>
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-xs4 ">
-            <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/cls03.png">
-                </div>
-                <div class="content_text">派对名称</div>
-            </div>
+    <div class="layui-row layui-col-space15" id="flow_list_div">
 
-        </div>
-        <div class="layui-col-xs4">
+        {{--<div class="layui-col-xs6 flow_item">
             <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/cls03.png">
+                <div class="content_body">
+                    <div class="content_body_title">要快乐哦，哈哈哈哈哈哈</div>
+                    <div class="content_body_text">
+                        以前不离不弃的叫夫妻，现在不离不弃的是手机，一机在手，天长地久！机不在手，魂都没有。以前不离不弃的叫夫妻，现在不离不弃的是手机，一机在手，天长地久！机不在手，魂都没有。
+                    </div>
                 </div>
-                <div class="content_text">派对名称，派对名称</div>
+                <div class="content_text">一切都刚刚好'</div>
             </div>
-        </div>
-        <div class="layui-col-xs4">
-            <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/cls03.png">
-                </div>
-                <div class="content_text">派对名称，派对名称</div>
+            <div class="label_user_avatar">
+                <img src="https://images.jobslee.top/storage/images/header/header5.jpeg" lay-src="https://images.jobslee.top/storage/images/header/header5.jpeg">
             </div>
-        </div>
+        </div>--}}
 
-    </div>
-    <div class="layui-row">
-        <div class="layui-col-xs12 text_label_day">
-            📆心情日签
-        </div>
-    </div>
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-xs4 ">
-            <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/user02.jpg">
-                </div>
-            </div>
-            <div class="label_user_avatar">
-                <img src="https://images.jobslee.top/storage/images/header/header5.jpeg">
-            </div>
-            <div class="label_user_name">武媚娘</div>
-        </div>
-        <div class="layui-col-xs4">
-            <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/user02.jpg">
-                </div>
-            </div>
-            <div class="label_user_avatar">
-                <img src="https://images.jobslee.top/storage/images/header/header5.jpeg">
-            </div>
-            <div class="label_user_name">武媚娘</div>
-        </div>
-        <div class="layui-col-xs4">
-            <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/user02.jpg">
-                </div>
-            </div>
-            <div class="label_user_avatar">
-                <img src="https://images.jobslee.top/storage/images/header/header5.jpeg">
-            </div>
-            <div class="label_user_name">武媚娘</div>
-        </div>
 
-    </div>
-    <div class="layui-row">
-        <div class="layui-col-xs12 text_label_day">
-            📸打卡日常
-        </div>
-    </div>
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-xs4">
-            <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/cls03.png">
-                </div>
-                <div class="content_text" style="line-height: 70px">要快乐哦，哈哈哈哈哈哈</div>
-            </div>
-            <div class="label_user_avatar">
-                <img src="https://images.jobslee.top/storage/images/header/header5.jpeg">
-            </div>
-        </div>
-        <div class="layui-col-xs4">
-            <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/user02.jpg">
-                </div>
-                <div class="content_text" style="line-height: 70px">要快乐哦，哈哈哈哈哈哈</div>
-            </div>
-            <div class="label_user_avatar">
-                <img src="https://images.jobslee.top/storage/images/header/header5.jpeg">
-            </div>
-        </div>
-        <div class="layui-col-xs4">
-            <div class="label_content">
-                <div class="content_image">
-                    <img src="https://images.jobslee.top/storage/images/ysrj/cls04.png">
-                </div>
-                <div class="content_text" style="line-height: 70px">要快乐哦，哈哈哈哈哈哈</div>
-            </div>
-            <div class="label_user_avatar">
-                <img src="https://images.jobslee.top/storage/images/header/header5.jpeg">
-            </div>
-        </div>
     </div>
 </div>
 </body>

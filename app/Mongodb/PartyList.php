@@ -17,11 +17,13 @@ class PartyList extends Model
     protected $fillable = [
         'id',
         'chat_sn',
+        'status',
         'user_id',
         'user_name',
         'user_avatar',
         'title',
         'content',
+        'background_image',
         'online_number',
         'views',
         'is_delete',
@@ -31,6 +33,7 @@ class PartyList extends Model
 
     protected $type = [
         'id' => 'integer',
+        'status' => 'integer',
         'user_id' => 'integer',
         'views' => 'integer',
         'is_delete' => 'integer'
