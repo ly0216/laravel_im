@@ -23,7 +23,7 @@
 <div class="layui-container">
     <div class="layui-row">
         <div class="layui-col-xs4 user_avatar">
-            <img id="user_avatar" src="https://images.jobslee.top/storage/images/header/header4.jpeg">
+            <img id="user_avatar" src="https://images.jobslee.top/storage/images/header/mao.jpg">
         </div>
         <div class="layui-col-xs8">
             <div class="layui-row user_name">name</div>

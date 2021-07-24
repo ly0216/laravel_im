@@ -17,6 +17,7 @@
     <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/config.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/room.js')}}"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 
 </head>
 
@@ -60,6 +61,8 @@
     </div>
 
 </div>
+<audio src="https://im.jobslee.top/audio/send.mp3" autoplay id='send_audio' loop></audio>
+<audio src="https://im.jobslee.top/audio/receive.mp3" autoplay id='receive_audio' loop></audio>
 </body>
 
 </html>

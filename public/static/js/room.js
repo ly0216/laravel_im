@@ -139,13 +139,19 @@ layui.use('layer', function () {
     //播放声音
     function playAudio(user_id) {
         if (user_id == _UID) {
-            let url = config.SEND_AUDIO_URL;
+            /*let url = config.SEND_AUDIO_URL;
             let audio = new Audio(url);
-            audio.play();
+            audio.play();*/
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                document.getElementById('send_audio').play();
+            }, false);
         } else {
-            let url = config.RECEIVE_AUDIO_URL;
+            /*let url = config.RECEIVE_AUDIO_URL;
             let audio = new Audio(url);
-            audio.play();
+            audio.play();*/
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                document.getElementById('receive_audio').play();
+            }, false);
         }
 
     }
