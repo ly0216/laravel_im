@@ -38,93 +38,11 @@
             <div class="layui-row message_content system_message">
                 <div class="layui-col-xs1">&nbsp;</div>
                 <div class="layui-col-xs10">
-                    <div>⚜️欢迎高富帅来到本群聊️欢迎高富帅来到本群⚜️</div>
+                    <div>⚜️欢迎来到测试群聊⚜️</div>
                 </div>
                 <div class="layui-col-xs1">&nbsp;</div>
             </div>
-            <div class="layui-row message_content">
-                <div class="layui-col-xs2">
-                    <div class="chat_user_avatar">
-                        <img src="https://images.jobslee.top/storage/images/ysrj/user02.jpg">
-                    </div>
-                </div>
-                <div class="layui-col-xs9">
-                    <div class="layui-row">
-                        <div class="chat_user_name">这是为什么呢？？？</div>
-                    </div>
-                    <div class="layui-row">
-                        <div class="chat_message">这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息</div>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-row message_content system_message">
-                <div class="layui-col-xs1">&nbsp;</div>
-                <div class="layui-col-xs10">
-                    <div>欢迎白富每来到本群聊</div>
-                </div>
-                <div class="layui-col-xs1">&nbsp;</div>
-            </div>
-            <div class="layui-row message_content">
-                <div class="layui-col-xs1">&nbsp;</div>
-                <div class="layui-col-xs9">
-                    <div class="layui-row right-name">
-                        <div class="chat_user_name">这是为什么呢？？？</div>
-                    </div>
-                    <div class="layui-row">
-                        <div class="chat_message right-message">这是一条测试消息，啊测试消息</div>
-                    </div>
-                </div>
-                <div class="layui-col-xs2">
-                    <div class="chat_user_avatar">
-                        <img src="https://images.jobslee.top/storage/images/ysrj/user02.jpg">
-                    </div>
-                </div>
-            </div>
-            <div class="layui-row message_content system_message">
-                <div class="layui-col-xs1">&nbsp;</div>
-                <div class="layui-col-xs10">
-                    <div>⚜️欢迎高富帅来到本群聊️欢迎高富帅来到本群⚜️</div>
-                </div>
-                <div class="layui-col-xs1">&nbsp;</div>
-            </div>
-            <div class="layui-row message_content">
-                <div class="layui-col-xs2">
-                    <div class="chat_user_avatar">
-                        <img src="https://images.jobslee.top/storage/images/ysrj/user02.jpg">
-                    </div>
-                </div>
-                <div class="layui-col-xs9">
-                    <div class="layui-row">
-                        <div class="chat_user_name">这是为什么呢？？？</div>
-                    </div>
-                    <div class="layui-row">
-                        <div class="chat_message">这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息</div>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-row message_content system_message">
-                <div class="layui-col-xs1">&nbsp;</div>
-                <div class="layui-col-xs10">
-                    <div>欢迎白富每来到本群聊</div>
-                </div>
-                <div class="layui-col-xs1">&nbsp;</div>
-            </div>
-            <div class="layui-row message_content">
-                <div class="layui-col-xs1">&nbsp;</div>
-                <div class="layui-col-xs9">
-                    <div class="layui-row right-name">
-                        <div class="chat_user_name">这是为什么呢？？？</div>
-                    </div>
-                    <div class="layui-row">
-                        <div class="chat_message">这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息</div>
-                    </div>
-                </div>
-                <div class="layui-col-xs2">
-                    <div class="chat_user_avatar">
-                        <img src="https://images.jobslee.top/storage/images/ysrj/user02.jpg">
-                    </div>
-                </div>
-            </div>
+
         </div>
         <div class="bottom_content"></div>
     </div>
