@@ -59,14 +59,44 @@ class HomeController extends Controller
                 'user_name' => $user->user_nickname,
                 'user_avatar' => $user->user_avatar,
                 'content' => json_decode($content, true),
-                'message_type' => 0,
-                'content_type' => 0,
+                'message_type' => PartyMessage::MESSAGE_TYPE_USER,
+                'content_type' => PartyMessage::CONTENT_TYPE_TEXT,
                 'created_at' => $at,
                 'updated_at' => $at
             ];
             PartyMessage::create($message);
             MessagePush::send($party->id, $message);
             return response()->json(['code' => 0, 'message' => '成功']);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 历史消息
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function historyMessage(Request $request){
+        try {
+            $chat_sn = $request->post('chat_sn');
+            if (!$chat_sn) {
+                return response()->json(['code' => 1, 'message' => '缺少参数']);
+            }
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+
+            //1.派对是否存在
+            $party = PartyList::where('chat_sn', $chat_sn)->first();
+            if (!$party) {
+                return response()->json(['code' => 1, 'message' => '派对不存在']);
+            }
+            $list = PartyMessage::select('*')->where('action','chatMessage')->where('party_id',intval($party->id))
+                ->orderBy('created_at','desc')->limit(20)->get()->toArray();
+
+            return response()->json(['code' => 0, 'message' => '成功','data'=>array_reverse($list)]);
         } catch (\Exception $exception) {
             return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
         }
@@ -99,7 +129,7 @@ class HomeController extends Controller
             $join = PartyMember::where('party_id', intval($party->id))->where('user_id', intval($user_id))->first();
             if (!$join) {
                 PartyMember::create([
-                    'id' => MongoDB::getTableIdx(PartyMember::tableName),
+                    'id' => MongoDB::getTableIdx(PartyMember::tableName,true),
                     'party_id' => intval($party->id),
                     'user_id' => intval($user_id),
                     'user_name' => $user->user_nickname,
@@ -127,8 +157,8 @@ class HomeController extends Controller
                 'user_name' => $user->user_nickname,
                 'user_avatar' => $user->user_avatar,
                 'content' => ['text' => $user->user_nickname . ' 进来跟大家聊天啦'],
-                'message_type' => 0,
-                'content_type' => 0,
+                'message_type' => PartyMessage::MESSAGE_TYPE_SYS,
+                'content_type' => PartyMessage::CONTENT_TYPE_TEXT,
                 'created_at' => $at,
                 'updated_at' => $at
             ];

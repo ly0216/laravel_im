@@ -122,7 +122,7 @@ $(document).ready(function () {
         }
 
         $('.rand-party').on('click',function(){
-            location.href = '/home/room/1';
+            location.href = '/home/room/a529437688a5d851f426519301233a05';
         });
 
 

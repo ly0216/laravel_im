@@ -42,7 +42,13 @@ class InitData extends Command
      */
     public function handle()
     {
-        $this->initUser();
+        $time = '2021-07-22 23:30:00';
+        $txTime = strtoupper(base_convert(strtotime($time), 10, 16));
+        echo $txTime."\n";
+        $at =  base_convert('60FBDEC4', 16, 10) ;
+        echo "60FBDEC4 ==> {$at} \n";
+        echo date("Y-m-d H:i:s",$at)."\n";
+        //$this->initUser();
         return true;
     }
 

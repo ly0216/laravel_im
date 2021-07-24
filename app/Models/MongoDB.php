@@ -16,7 +16,7 @@ class MongoDB extends Model
         return self::CacheKey . $table;
     }
 
-    public static function getTableIdx($table, $clear = false)
+    public static function getTableIdx($table, $clear = true)
     {
         $cache_key = self::getCacheKey($table);
         if ($clear) {

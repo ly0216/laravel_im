@@ -22,6 +22,7 @@ Route::post('get/date','ConversationController@getCnDate');
 
 Route::group(['prefix' => 'home'], function ($router) {
     Route::post('room/join','HomeController@joinRoom');
+    Route::post('room/history/message','HomeController@historyMessage');
     Route::post('send/message','HomeController@send');
 });
 

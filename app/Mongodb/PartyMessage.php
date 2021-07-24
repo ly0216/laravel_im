@@ -14,6 +14,12 @@ class PartyMessage extends Model
     protected $collection = 'liy_party_message';
     protected $primaryKey = '_id';    //设置id
 
+    const MESSAGE_TYPE_USER = 0;//用户普通消息
+    const MESSAGE_TYPE_SYS  = 1;//系统消息
+
+    const CONTENT_TYPE_TEXT = 0;//文字消息
+    const CONTENT_TYPE_IMAGE = 1;//图片消息
+
     protected $fillable = [
         'id',
         'action',

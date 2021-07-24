@@ -71,7 +71,7 @@
                         <div class="chat_user_name">这是为什么呢？？？</div>
                     </div>
                     <div class="layui-row">
-                        <div class="chat_message">这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息这是一条测试消息，啊测试消息</div>
+                        <div class="chat_message right-message">这是一条测试消息，啊测试消息</div>
                     </div>
                 </div>
                 <div class="layui-col-xs2">
