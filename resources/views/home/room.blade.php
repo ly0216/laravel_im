@@ -61,8 +61,10 @@
     </div>
 
 </div>
-<audio src="https://im.jobslee.top/audio/send.mp3" autoplay id='send_audio' loop></audio>
-<audio src="https://im.jobslee.top/audio/receive.mp3" autoplay id='receive_audio' loop></audio>
+<audio src="https://im.jobslee.top/audio/send.mp3"  preload="auto"  id='send_audio' ></audio>
+<audio src="https://im.jobslee.top/audio/receive.mp3"  preload="auto" id='receive_audio' ></audio>
+<input type="hidden" id="click_send_audio" value="">
+<input type="hidden" id="click_receive_audio" value="">
 </body>
 
 </html>

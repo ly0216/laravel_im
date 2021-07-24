@@ -136,22 +136,36 @@ layui.use('layer', function () {
         };
     }
 
+    $('#click_send_audio').on('click',function(){
+        document.getElementById('send_audio').play();
+    });
+    $('#click_receive_audio').on('click',function(){
+        document.getElementById('receive_audio').play();
+    });
     //播放声音
     function playAudio(user_id) {
         if (user_id == _UID) {
+            let btn = document.getElementById('click_send_audio');
+            btn.click();
+
             /*let url = config.SEND_AUDIO_URL;
             let audio = new Audio(url);
-            audio.play();*/
+            audio.play();
             document.addEventListener("WeixinJSBridgeReady", function () {
+                document.getElementById('send_audio').load();
                 document.getElementById('send_audio').play();
-            }, false);
+            }, false);*/
         } else {
+            let btn = document.getElementById('click_receive_audio');
+            btn.click();
+
             /*let url = config.RECEIVE_AUDIO_URL;
             let audio = new Audio(url);
-            audio.play();*/
+            audio.play();
             document.addEventListener("WeixinJSBridgeReady", function () {
+                document.getElementById('send_audio').load();
                 document.getElementById('receive_audio').play();
-            }, false);
+            }, false);*/
         }
 
     }
