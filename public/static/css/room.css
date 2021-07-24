@@ -17,7 +17,8 @@ body{
     max-height: 645px;
     width: 100%;
     border-radius: 5px;
-    overflow:auto
+    overflow:auto;
+    min-height: 645px;
 }
 
 .float_bottom{
