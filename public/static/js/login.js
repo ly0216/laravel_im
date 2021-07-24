@@ -1,6 +1,7 @@
 $(document).ready(function(){
     layui.use('form', function(){
         let form = layui.form;
+        let API_URL = 'https://im.jobslee.top/api/';
         //监听提交
         form.on('submit(signIn)', function(data){
             /*let field_data = JSON.stringify(data.field);*/
@@ -11,7 +12,7 @@ $(document).ready(function(){
                 },
                 method: "POST",
                 /*url: 'https://im.jobslee.top/api/login',*/
-                url:'http://liy.ws.com/api/login',
+                url:API_URL+'login',
                 dataType: 'json',
                 data: data.field,
                 success(res) {

@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     layui.use('slider', function () {
         let slider = layui.slider;
-
+        let API_URL = 'https://im.jobslee.top/api/';
         let token = localStorage.getItem('user_login_access_token');
         if (!token) {
             location.href = "/login";
@@ -16,7 +16,7 @@ $(document).ready(function () {
                     Authorization: 'bearer ' + token
                 },
                 method: "POST",
-                url: 'http://liy.ws.com/api/me',
+                url: API_URL+'me',
                 dataType: 'json',
                 data: {},
                 success(res) {
@@ -48,36 +48,11 @@ $(document).ready(function () {
             //console.log(user, data);
         }
 
-        //getDaySign();
 
-        function getDaySign() {
-            $.ajax({
-                method: "POST",
-                url: 'http://liy.ws.com/api/home/day/sign',
-                dataType: 'json',
-                data: {},
-                success(res) {
-                    if (res.code == 1) {
-                        layer.msg(res.message);
-                    } else if (res.code == 1401) {
-                        layer.msg('登录信息已过期，请重新登录', function () {
-                            location.href = '/login';
-                        });
-                    } else {
-                        /*let field_data = JSON.stringify(data.field);*/
-                        let data = res.data;
-                        console.log(data[0].user_name);
-                    }
-                },
-                error(e) {
-                    console.log(e);
-                }
-            });
-        }
 
         function initSocket() {
             console.log('连接socket');
-            let wsServer = 'ws://liy.ws.com/ws?token=' + token;
+            let wsServer = 'wss://im.jobslee.top/wss?token=' + token;
             let webSocket = new WebSocket(wsServer);
             webSocket.onopen = function (evt) {
                 console.log("Connected to WebSocket server.");

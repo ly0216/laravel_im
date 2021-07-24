@@ -1,7 +1,7 @@
 
     layui.use('layer', function () {
         let layer = layui.layer;
-
+        let API_URL = 'https://im.jobslee.top/api/';
         let token = localStorage.getItem('user_login_access_token');
         if (!token) {
             layer.msg('登录信息已过期，请重新登录',{time:1500},function(){
@@ -108,7 +108,7 @@
                     Authorization: 'bearer ' + token
                 },
                 method: "POST",
-                url: 'http://liy.ws.com/api/home/room/join',
+                url: API_URL+'home/room/join',
                 dataType: 'json',
                 data: {'chat_sn': chat_sn},
                 success(res) {
@@ -141,7 +141,7 @@
                     Authorization: 'bearer ' + token
                 },
                 method: "POST",
-                url: 'http://liy.ws.com/api/home/room/history/message',
+                url: API_URL+'home/room/history/message',
                 dataType: 'json',
                 data: {'chat_sn': chat_sn},
                 success(res) {
@@ -268,7 +268,7 @@
                     Authorization: 'bearer ' + token
                 },
                 method: "POST",
-                url: 'http://liy.ws.com/api/home/send/message',
+                url: API_URL+'home/send/message',
                 dataType: 'json',
                 data: {'chat_sn': chat_sn,'content':content},
                 success(res) {
