@@ -95,8 +95,8 @@ return [
             'host'     => 'localhost',
             'port'     => 27017,
             'database' => 'liy_im',
-            'username' => '',
-            'password' => '',
+            'username' => 'liyImRW',
+            'password' => 'sZ3gYiqh$Z5Z7p2n1C',
         ],
 
 
