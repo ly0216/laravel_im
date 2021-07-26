@@ -6,5 +6,5 @@ let config = {
     'SEND_AUDIO_URL':'https://im.jobslee.top/audio/send.mp3',
     'RECEIVE_AUDIO_URL':'https://im.jobslee.top/audio/receive.mp3',
     'ROOM_BACKGROUND_IMAGE':'https://images.jobslee.top/storage/images/backgroundimage/bg-1.jpeg',
-    'APP_VERSION': '0.0.1'
+    'APP_VERSION': '0.0.12'
 };

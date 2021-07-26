@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{{asset('static/css/im.css')}}">
         <!-- Javascript -->
         <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
-        <script type="text/javascript" src="{{asset('static/js/config.js')}}"></script>
+        <script type="text/javascript" src="{{asset('static/js/config.js')}}?v={{$version}}"></script>
 
     </head>
     <body style="background-color: #0C0C0C;">
@@ -26,7 +26,13 @@
                     <a href="/login" id="sign_in">SIGN IN</a>
                 </div>
             </div>
+            <div class="version-no">
+                im.jobslee.top BEAT V<span id="app-version">0.0.1</span>
+            </div>
         </div>
     </body>
+    <script>
+        $('#app-version').text(config.APP_VERSION);
+    </script>
 
 </html>

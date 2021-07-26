@@ -38,7 +38,7 @@ html, body {
 }
 
 .links{
-    background-color: antiquewhite;
+    /*background-color: antiquewhite;*/
     border-radius: 5px;
     height: 46px;
     align-content: center;
@@ -73,4 +73,23 @@ html, body {
     display: none;
     color: #e50012;
 }
+.version-no{
+    position: absolute;
+    bottom: 20px;
+}
+.login-label{
+    color: #333;
+    font-size: 22px;
+    padding: 10px 0 !important;
+    width: 105px!important;
+}
 
+.login-input{
+    background-color: #333333!important;
+}
+
+.im-login-btn{
+    width: 120px;
+    background-color: #434141!important;
+    color: #5fb878!important;
+}

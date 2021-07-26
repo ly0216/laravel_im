@@ -14,19 +14,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    return view('welcome', ['version' => env('APP_VERSION', '0.0.1')]);
 });
 Route::get('/login', function () {
-    return view('login');
+    return view('login', ['version' => env('APP_VERSION', '0.0.1')]);
 });
 Route::get('/home/index', function () {
-    return view('home.index');
+    return view('home.index', ['version' => env('APP_VERSION', '0.0.1')]);
 });
 
 Route::get('/home/room/{chat_sn?}', function ($chat_sn = 1) {
-    return view('home.room', ['chat_sn' => $chat_sn]);
+    return view('home.room', ['chat_sn' => $chat_sn, env('APP_VERSION', '0.0.1')]);
 });
 
-Route::get('/home/party/create', function(){
-    return view('party.create');
+Route::get('/home/party/create', function () {
+    return view('party.create', ['version' => env('APP_VERSION', '0.0.1')]);
 });

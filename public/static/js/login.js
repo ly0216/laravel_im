@@ -22,11 +22,11 @@ $(document).ready(function(){
                         let data = res.data;
                         if(data.access_token){
                             localStorage.setItem('user_login_access_token',data.access_token);
-                            layer.msg('登录成功',{time:1500},function(){
+                            layer.msg('Success',{time:1500},function(){
                                 location.href = '/home/index';
                             });
                         }else{
-                            layer.msg('登录失败');
+                            layer.msg('Fail');
                         }
                     }
                     console.log(res);

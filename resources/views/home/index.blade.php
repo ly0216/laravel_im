@@ -11,12 +11,12 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{asset('static/layui/css/layui.css')}}">
-    <link rel="stylesheet" href="{{asset('static/css/index.css')}}">
+    <link rel="stylesheet" href="{{asset('static/css/index.css')}}?v={{$version}}">
     <!-- Javascript -->
     <script type="text/javascript" src="{{asset('static/layui/layui.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('static/js/config.js')}}"></script>
-    <script type="text/javascript" src="{{asset('static/js/index.js')}}"></script>
+    <script type="text/javascript" src="{{asset('static/js/config.js')}}?v={{$version}}"></script>
+    <script type="text/javascript" src="{{asset('static/js/index.js')}}?v={{$version}}"></script>
 </head>
 
 <body>
