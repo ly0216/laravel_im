@@ -17,7 +17,7 @@
     <script type="text/javascript" src="{{asset('static/js/jquery.3.2.1.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/config.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/js/room.js')}}"></script>
-    
+
 
 </head>
 

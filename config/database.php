@@ -91,12 +91,15 @@ return [
             'prefix_indexes' => true,
         ],
         'mongodb' => [
-            'driver'   => 'mongodb',
-            'host'     => 'localhost',
-            'port'     => 27017,
+            'driver' => 'mongodb',
+            'host' => '101.33.76.208',
+            'port' => 27017,
             'database' => 'liy_im',
-            'username' => 'liyImRW',
-            'password' => 'sZ3gYiqh$Z5Z7p2n1C',
+            'username' => 'liyImDBA',
+            'password' => '7ggInXbanBCnh@e#@8bTAp',
+            'options' => [
+                'database' => 'liy_im'
+            ]
         ],
 
 
@@ -132,7 +135,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [
