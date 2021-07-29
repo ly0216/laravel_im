@@ -103,3 +103,16 @@ body{
 .layui-tab-title li{
     color: #c9c9c9;
 }
+.chat_title{
+    height: 42px;
+    line-height: 42px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #F8F8F8;
+}
+
+.tab_item_li{
+    width: 42px!important;
+    min-width: 42px!important;
+}

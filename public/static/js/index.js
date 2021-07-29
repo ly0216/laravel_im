@@ -12,6 +12,7 @@ $(document).ready(function () {
 
         getInfo(token);
 
+        //获取用户详情
         function getInfo(token) {
             $.ajax({
                 headers: {
@@ -33,6 +34,37 @@ $(document).ready(function () {
                         let user = JSON.stringify(res.data);
                         localStorage.setItem('user_info_data', user);
                         onShow();
+                    }
+                },
+                error(e) {
+                    console.log(e);
+                }
+            });
+        }
+        getMessageNumber();
+        //获取好友申请消息数量
+        function getMessageNumber() {
+            $.ajax({
+                headers: {
+                    Authorization: 'bearer ' + token
+                },
+                method: "POST",
+                url: API_URL+'home/message/number',
+                dataType: 'json',
+                data: {},
+                success(res) {
+                    if (res.code == 1) {
+                        layer.msg(res.message);
+                    } else if (res.code == 1401) {
+                        layer.msg('登录信息已过期，请重新登录', function () {
+                            location.href = '/login';
+                        });
+                    } else {
+                        let number = res.data;
+                        if(number > 0){
+                            $('.message_tip').show();
+                            $('.tip_number').text(number);
+                        }
                     }
                 },
                 error(e) {
@@ -149,6 +181,12 @@ $(document).ready(function () {
 
         });
 
+        //好友申请列表
+        $(document).on('click','.tip_number',function(){
+            location.href = '/home/apply/list';
+
+
+        });
 
     });
 

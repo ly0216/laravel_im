@@ -8,10 +8,13 @@ use App\Im\MessagePush;
 use App\Models\MongoDB;
 use App\Mongodb\Collection;
 use App\Mongodb\DaySign;
+use App\Mongodb\FriendApply;
 use App\Mongodb\PartyList;
 use App\Mongodb\PartyMember;
 use App\Mongodb\PartyMessage;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -22,6 +25,161 @@ class HomeController extends Controller
         $this->middleware('check.token');
     }
 
+
+    /**
+     * 处理好友申请
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function friendApplyDo(Request $request)
+    {
+        try {
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $apply_id = $request->post('apply_id');
+            if (!$apply_id) {
+                return response()->json(['code' => 1, 'message' => '缺少参数']);
+            }
+            $type = $request->post('type');
+            if (!in_array($type, [1, 2])) {
+                return response()->json(['code' => 1, 'message' => '无效的参数']);
+            }
+            $has = FriendApply::where('_id', $apply_id)->first();
+            if (!$has) {
+                return response()->json(['code' => 1, 'message' => '无效的申请']);
+            }
+            if ($type == 1) {//同意
+                //1.创建私聊会话
+                $list = json_decode($has->user_ids_str, true);
+                foreach ($list as $uid){
+                    //2.互相添加好友
+                    //3.添加会话成员
+                }
+
+                //4.创建会话消息
+
+            }
+            FriendApply::where('_id', $apply_id)->delete();
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => []]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 好友申请列表
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function friendApplyList(Request $request)
+    {
+        try {
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $page = $request->post('page') ?: 1;
+            $model = FriendApply::select('*')->where('status', 2)->where('friend_id', intval($user_id));
+            $total = $model->count();
+            $limit = 20;
+            $total_page = ceil($limit / $total);
+            $skip = ($page - 1) * $limit;
+            $list = $model->orderBy('created_at', 'desc')->skip($skip)->limit($limit)->get();
+            $data = [
+                'total' => $total,
+                'total_page' => $total_page,
+                'page' => $page,
+                'page_size' => $limit,
+                'list' => $list
+            ];
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $data]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 好友申请数量
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function messageNumber()
+    {
+        try {
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $number = FriendApply::where('friend_id', intval($user_id))->where('status', 2)->count();
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $number]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 添加好友请求
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function friendApply(Request $request)
+    {
+        try {
+
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $friend_id = $request->post('friend_id');
+            if (!$friend_id) {
+                return response()->json(['code' => 1, 'message' => '缺少参数']);
+            }
+            $hasUser = DB::table(User::tableName)->select('id', 'user_nickname', 'user_avatar')->where('id', $friend_id)->first();
+            if (!$hasUser) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $my = auth('api')->user();
+            $ids = [intval($user_id), intval($friend_id)];
+            sort($ids);
+            $str = json_encode($ids);
+            $hasApply = FriendApply::where('user_id', intval($user_id))
+                ->where('friend_id', intval($friend_id))
+                ->first();
+            $at = date("Y-m-d H:i:s");
+            if ($hasApply) {
+                if ($hasApply->status == 1) {
+                    FriendApply::where('_id', $hasApply->_id)->update([
+                        'status' => 2,
+                        'updated_at' => $at
+                    ]);
+                } else {
+                    return response()->json(['code' => 1, 'message' => '请勿重复发送邀请']);
+                }
+
+            } else {
+                FriendApply::create([
+                    'user_id' => intval($user_id),
+                    'user_ids_str' => $str,
+                    'friend_id' => intval($friend_id),
+                    'friend_nickname' => $my->user_nickname,
+                    'friend_avatar' => $my->user_avatar,
+                    'status' => 2,
+                    'created_at' => $at,
+                    'updated_at' => $at
+                ]);
+            }
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => ['ids' => $ids, 'srt' => $str]]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 删除收藏
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function collectionDel(Request $request)
     {
         try {
@@ -45,7 +203,7 @@ class HomeController extends Controller
                 'is_delete' => 1,
                 'updated_at' => date("Y-m-d H:i:s")
             ]);
-            if(!$del){
+            if (!$del) {
                 return response()->json(['code' => 1, 'message' => '删除失败']);
             }
             return response()->json(['code' => 0, 'message' => '成功', 'data' => []]);
@@ -393,7 +551,8 @@ class HomeController extends Controller
                 'created_at' => $at,
                 'updated_at' => $at
             ];
-            PartyMessage::create($message);
+            $res = PartyMessage::create($message);
+            $message['_id'] = $res->_id;
             MessagePush::send($party->id, $message);
             return response()->json(['code' => 0, 'message' => '成功']);
         } catch (\Exception $exception) {

@@ -13,9 +13,7 @@ body{
 }
 
 .user_name{
-    position: absolute;
     top: 15px;
-    width: 200px;
     height: 38px;
     line-height: 38px;
     font-size: 24px;
@@ -186,5 +184,16 @@ body{
 
 .flow_item{
     height: 220px;
+}
+
+.message_tip{
+    top: 15px;
+    height: 38px;
+    line-height: 38px;
+}
+
+.tip_number{
+    top: -10px;
+    color: #e50012;
 }
 

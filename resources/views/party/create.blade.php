@@ -20,6 +20,21 @@
 </head>
 
 <body>
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-row">
+            <div class="layui-col-xs1">
+                <div class="chat_title click_back">🔙</div>
+            </div>
+            <div class="layui-col-xs10">
+                <div class="chat_title party_title_text">创建派对</div>
+            </div>
+            <div class="layui-col-xs1">
+                <div class="chat_title is_collect"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="layui-form">
     <div class="layui-form-item ">
         <div class="layui-input-block input_margin_20">
@@ -34,9 +49,11 @@
     <div class="layui-form-item">
         <div class="layui-tab layui-tab-brief input_margin_20" lay-filter="background-image">
             <ul class="layui-tab-title">
-                <li style="width: 85px;" class="layui-this" lay-id="11">鸟瞰大地</li>
-                <li style="width: 85px;" lay-id="10">眺望星空</li>
-                <li style="width: 85px;" lay-id="9">面朝大海</li>
+                <li  class="layui-this tab_item_li" lay-id="11">鸟瞰大地</li>
+                <li class="tab_item_li" lay-id="10">眺望星空</li>
+                <li class="tab_item_li" lay-id="9">面朝大海</li>
+                <li class="tab_item_li" lay-id="23">小丑🤡</li>
+                <li class="tab_item_li" lay-id="22">小丑女</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -47,6 +64,12 @@
                 </div>
                 <div class="layui-tab-item">
                     <img style="width: 355px;height: 550px" src="https://images.jobslee.top/storage/images/backgroundimage/bg-9.jpeg">
+                </div>
+                <div class="layui-tab-item">
+                    <img style="width: 355px;height: 550px" src="https://images.jobslee.top/storage/images/backgroundimage/bg-23.jpeg">
+                </div>
+                <div class="layui-tab-item">
+                    <img style="width: 355px;height: 550px" src="https://images.jobslee.top/storage/images/backgroundimage/bg-22.jpg">
                 </div>
             </div>
         </div>

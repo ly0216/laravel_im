@@ -26,8 +26,14 @@
             <img id="user_avatar" src="https://images.jobslee.top/storage/images/header/mao.jpg">
         </div>
         <div class="layui-col-xs8">
-            <div class="layui-row user_name">name</div>
+            <div class="layui-row">
+                <div class="layui-col-xs11 user_name"></div>
+                <div class="layui-col-xs1 message_tip" style="display: none">
+                    <span class="layui-badge-rim tip_number">0</span>
+                </div>
+            </div>
             <div class="layui-row user_signature">signature</div>
+
         </div>
     </div>
 

@@ -33,6 +33,10 @@ Route::group(['prefix' => 'home'], function ($router) {
     Route::post('party/collection', 'HomeController@collection');
     Route::post('party/collection/list', 'HomeController@collectionList');
     Route::post('party/collection/del', 'HomeController@collectionDel');
+    Route::post('friend/apply', 'HomeController@friendApply');
+    Route::post('message/number', 'HomeController@messageNumber');
+    Route::post('friend/apply/list', 'HomeController@friendApplyList');
+    Route::post('friend/apply/do', 'HomeController@friendApplyDo');
 });
 
 Route::group(['prefix' => 'auction'], function ($router) {

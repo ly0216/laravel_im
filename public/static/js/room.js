@@ -301,7 +301,7 @@ layui.use('layer', function () {
     function appendOtherUserMessage(message) {
         let html = '<div class="layui-row message_content">' +
             '    <div class="layui-col-xs2">' +
-            '        <div class="chat_user_avatar">' +
+            '        <div class="chat_user_avatar friend_user_item" id="'+message._id+'" message_id="'+message._id+'" user_id="'+message.user_id+'">' +
             '            <img src="' + message.user_avatar + '">' +
             '        </div>' +
             '    </div>' +
@@ -316,6 +316,42 @@ layui.use('layer', function () {
             '</div>';
         $('.message').append(html);
     }
+    $(document).on('click','.friend_user_item',function(){
+        let message_id = this.getAttribute('message_id');
+        let user_id = this.getAttribute('user_id');
+        layer.tips('<div class="add_friend" user_id="'+user_id+'">💡添加好友</div>', '#'+message_id, {
+            tips: 1
+        })
+    });
+    $(document).on('click','.add_friend',function(){
+        let user_id = this.getAttribute('user_id');
+        $.ajax({
+            headers: {
+                Authorization: 'bearer ' + token
+            },
+            method: "POST",
+            url: API_URL + 'home/friend/apply',
+            dataType: 'json',
+            data: {'friend_id': user_id},
+            success(res) {
+                console.log(res);
+                if (res.code == 1) {
+                    layer.msg(res.message);
+                } else if (res.code == 1401) {
+                    layer.msg('登录信息已过期，请重新登录', function () {
+                        location.href = '/login';
+                    });
+                } else {
+                    layer.msg('好友申请已发送，请等待对方同意');
+                }
+
+                return false;
+            },
+            error(e) {
+                console.log(e);
+            }
+        });
+    });
 
     //追加系统消息
     function appendSysMessage(message) {

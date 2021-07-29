@@ -35,3 +35,7 @@ Route::get('/home/party/create', function () {
 Route::get('/home/my/collection', function () {
     return view('party.collection', ['version' => env('APP_VERSION', '0.0.1')]);
 });
+
+Route::get('/home/apply/list', function () {
+    return view('home.apply', ['version' => env('APP_VERSION', '0.0.1')]);
+});

@@ -4,30 +4,27 @@ namespace App\Mongodb;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 
-class FriendApply extends Model
+class PrivateChat extends Model
 {
     //
+    public $timestamps = false;
     protected $connection = 'mongodb';
     //use SoftDeletes;
-    protected $collection = 'liy_friend_apply';
-    const tableName = 'liy_friend_apply';
+    protected $collection = 'liy_private_chat';
+    const tableName = 'liy_private_chat';
     protected $primaryKey = '_id';    //设置id
 
     protected $fillable = [
-        'user_id',
+        'chat_sn',
         'user_ids_str',
-        'friend_id',
-        'friend_nickname',
-        'friend_avatar',
-        'status',
+        'is_delete',
         'created_at',
         'updated_at'
     ];
     protected $type = [
         'id' => 'integer',
         'user_id' => 'integer',
-        'friend_id' => 'integer',
-        'status' => 'integer'
+        'is_delete' => 'integer'
 
     ];
 

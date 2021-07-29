@@ -18,6 +18,10 @@ $(document).ready(function () {
                 $('#background_image').val('https://images.jobslee.top/storage/images/backgroundimage/bg-10.jpeg')
             }else if(lay_id == 9){
                 $('#background_image').val('https://images.jobslee.top/storage/images/backgroundimage/bg-9.jpeg')
+            }else if(lay_id == 23){
+                $('#background_image').val('https://images.jobslee.top/storage/images/backgroundimage/bg-23.jpeg')
+            }else if(lay_id == 22){
+                $('#background_image').val('https://images.jobslee.top/storage/images/backgroundimage/bg-22.jpg')
             }else{
                 $('#background_image').val('https://images.jobslee.top/storage/images/backgroundimage/bg-11.jpeg')
             }
@@ -54,7 +58,7 @@ $(document).ready(function () {
 
             return false;
         });
-        $('.call_back').on('click',function(){
+        $('.click_back').on('click',function(){
            location.href = '/home/index';
         });
 

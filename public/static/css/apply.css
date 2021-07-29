@@ -1,0 +1,73 @@
+
+body{
+    background-color: #0C0C0C;
+}
+
+.chat_title{
+    height: 42px;
+    line-height: 42px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #F8F8F8;
+}
+
+.flow_item{
+    background-color: #c2c2c2;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+.user_avatar img{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+.user_nickname{
+    color: #454343;
+    height: 42px;
+    line-height: 42px;
+    font-size: 22px;
+    word-break: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+.data_time{
+    color: #565353;
+    height: 36px;
+    line-height: 36px;
+    font-size: 20px;
+}
+
+.agree_btn{
+    background-color: #413e3e;
+    width: 65px;
+    height: 36px;
+    color: #5fb878;
+    text-align: center;
+    font-size: 18px;
+    line-height: 36px;
+    border-radius: 5px;
+}
+.refuse_btn{
+    text-align: center;
+    margin-top: 5px;
+    background-color: #413e3e;
+    width: 65px;
+    height: 36px;
+    color: #cb481f;
+    font-size: 18px;
+    line-height: 36px;
+    border-radius: 5px;
+}
+
+
+
+
+
+
+
+
+
