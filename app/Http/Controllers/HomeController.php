@@ -6,6 +6,7 @@ use App\Common\Code;
 use App\Im\Common;
 use App\Im\MessagePush;
 use App\Models\MongoDB;
+use App\Mongodb\Collection;
 use App\Mongodb\DaySign;
 use App\Mongodb\PartyList;
 use App\Mongodb\PartyMember;
@@ -21,20 +22,171 @@ class HomeController extends Controller
         $this->middleware('check.token');
     }
 
-    /**
-     * 随机加入派对
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function randomJoin( ){
+    public function collectionDel(Request $request)
+    {
         try {
 
             $user_id = auth('api')->id();
             if (!$user_id) {
                 return response()->json(['code' => 1, 'message' => '无效的用户']);
             }
-            $list = PartyList::where('is_delete',0)->where('status',1)->pluck('chat_sn');
+            $coll_id = $request->post('collection_id');
+            if (!$coll_id) {
+                return response()->json(['code' => 1, 'message' => '缺少参数']);
+            }
+            $has = Collection::where('_id', $coll_id)->first();
+            if (!$has) {
+                return response()->json(['code' => 1, 'message' => '无效的收藏']);
+            }
+            if ($has->user_id != $user_id) {
+                return response()->json(['code' => 1, 'message' => '删除失败']);
+            }
+            $del = Collection::where('_id', $coll_id)->update([
+                'is_delete' => 1,
+                'updated_at' => date("Y-m-d H:i:s")
+            ]);
+            if(!$del){
+                return response()->json(['code' => 1, 'message' => '删除失败']);
+            }
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => []]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 我的收藏列表
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function collectionList(Request $request)
+    {
+        try {
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $page = $request->post('page') ?: 1;
+            $limit = 20;
+            $skip = ($page - 1) * $limit;
+            $model = Collection::select('_id', 'user_id', 'party_id', 'is_top', 'created_at')
+                ->where('user_id', intval($user_id))
+                ->where('is_delete', 2);
+            $total = $model->count();
+            $total_page = ceil($total / $limit);
+            $list = $model->orderBy('is_top', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->skip($skip)->limit($limit)->get();
+            foreach ($list as $item => $val) {
+                $party = PartyList::select('user_avatar', 'title', 'content', 'chat_sn')->where('_id', $val->party_id)
+                    ->where('is_delete', 0)->where('status', 1)->first();
+                if (!$party) {
+                    $val->leader_user_avatar = env('DEFAULT_AVATAR', 'https://images.jobslee.top/storage/images/header/not_found.jpg');
+                    $val->party_title = '无效的派对';
+                    $val->party_content = '无效的派对';
+                    $val->chat_sn = 'no';
+                } else {
+                    $val->leader_user_avatar = $party->user_avatar;
+                    $val->party_title = $party->title;
+                    $val->party_content = $party->content;
+                    $val->chat_sn = $party->chat_sn;
+                }
+            }
+            $data = [
+                'total' => $total,
+                'total_page' => $total_page,
+                'page' => $page,
+                'page_size' => $limit,
+                'list' => $list
+            ];
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $data]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 收藏/取消收藏
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function collection(Request $request)
+    {
+        try {
+
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $chat_sn = $request->post('chat_sn');
+            if (!$chat_sn) {
+                return response()->json(['code' => 1, 'message' => '缺少参数']);
+            }
+            $party = PartyList::where('chat_sn', $chat_sn)->first();
+            if (!$party) {
+                return response()->json(['code' => 1, 'message' => '派对不存在']);
+            }
+            $at = date("Y-m-d H:i:s");
+            $is_coll = 2;
+            $tip = '收藏成功';
+            $hasColl = Collection::where('user_id', intval($user_id))->where('party_id', $party->_id)->first();
+            if (!$hasColl) {
+                $res = Collection::create([
+                    'user_id' => intval($user_id),
+                    'party_id' => $party->_id,
+                    'is_top' => 2,
+                    'is_delete' => 2,
+                    'created_at' => $at,
+                    'updated_at' => $at
+                ]);
+                if (!$res) {
+                    return response()->json(['code' => 2, 'message' => '收藏失败', 'data' => []]);
+                }
+                $is_coll = 1;
+            } else {
+                if ($hasColl->is_delete == 1) {
+                    $res = Collection::where('_id', $hasColl->_id)->update([
+                        'is_delete' => 2,
+                        'updated_at' => $at
+                    ]);
+                    if (!$res) {
+                        return response()->json(['code' => 2, 'message' => '收藏失败', 'data' => []]);
+                    }
+                    $is_coll = 1;
+                } else {
+                    $res = Collection::where('_id', $hasColl->_id)->update([
+                        'is_delete' => 1,
+                        'updated_at' => $at
+                    ]);
+                    if (!$res) {
+                        return response()->json(['code' => 2, 'message' => '取消收藏失败', 'data' => []]);
+                    }
+                    $tip = '取消收藏成功';
+                }
+            }
+
+
+            return response()->json(['code' => 0, 'message' => $tip, 'data' => $is_coll]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 随机加入派对
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function randomJoin()
+    {
+        try {
+
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $list = PartyList::where('is_delete', 0)->where('status', 1)->pluck('chat_sn');
             $number = count($list);
-            $idx = mt_rand(0,($number -1));
+            $idx = mt_rand(0, ($number - 1));
             $chat_sn = $list[$idx];
             return response()->json(['code' => 0, 'message' => '成功', 'data' => $chat_sn]);
         } catch (\Exception $exception) {
@@ -75,8 +227,8 @@ class HomeController extends Controller
             }
             $at = date("Y-m-d H:i:s");
             $status = 0;
-            if($user->need_examine == 2){
-                $status =1;
+            if ($user->need_examine == 2) {
+                $status = 1;
             }
             $data = [
                 'id' => MongoDB::getTableIdx(PartyList::tableName),
@@ -189,6 +341,8 @@ class HomeController extends Controller
             if (!$party) {
                 return response()->json(['code' => 1, 'message' => '派对不存在']);
             }
+            $hasColl = Collection::where('user_id', intval($user_id))->where('party_id', $party->_id)->where('is_delete', 2)->count();
+            $party->is_collection = $hasColl;
             PartyList::where('chat_sn', $chat_sn)->increment('views', 1);
             return response()->json(['code' => 0, 'message' => '成功', 'data' => $party]);
         } catch (\Exception $exception) {

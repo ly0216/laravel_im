@@ -83,6 +83,10 @@ layui.use('layer', function () {
                         $('#content_div').css('background-size', '100% 100%');
                     }
 
+                    if(data.is_collection > 0){
+                        $('.is_collect').text('💌');
+                    }
+
 
                 }
             },
@@ -93,20 +97,26 @@ layui.use('layer', function () {
     }
     //初始化连接socket
     function initSocket() {
-        console.log('连接socket');
+
         //let wsServer = 'ws://liy.ws.com/ws?token=' + token;
         let wsServer = config.SOCKET_URL + token;
         let webSocket = new WebSocket(wsServer);
-        //打开socket连接
-        webSocket.onopen = function (evt) {
-            console.log("Connected to WebSocket server.");
-            if (evt.isTrusted && evt.returnValue) {
-                console.log('socket 连接成功');
-                headerCheck(webSocket);
-            } else {
-                console.log('socket 连接失败');
-            }
-        };
+        let socketState = webSocket.readyState;
+        if(socketState != 0){
+            //打开socket连接
+            webSocket.onopen = function (evt) {
+                console.log("Connected to WebSocket server.");
+                if (evt.isTrusted && evt.returnValue) {
+                    console.log('socket 连接成功');
+                    headerCheck(webSocket);
+                } else {
+                    console.log('socket 连接失败');
+                }
+            };
+        }else{
+            console.log('socket 已连接 无需二次连接');
+        }
+
         webSocket.onclose = function (evt) {
             console.log("Disconnected");
         };
@@ -380,6 +390,38 @@ layui.use('layer', function () {
             }
         });
     }
+
+    $('.is_collect').on('click',function(){
+        $.ajax({
+            headers: {
+                Authorization: 'bearer ' + token
+            },
+            method: "POST",
+            url: API_URL + 'home/party/collection',
+            dataType: 'json',
+            data: {'chat_sn': chat_sn},
+            success(res) {
+                if (res.code == 1) {
+                    layer.msg(res.message);
+                } else if (res.code == 1401) {
+                    layer.msg('登录信息已过期，请重新登录', function () {
+                        location.href = '/login';
+                    });
+                } else {
+                    layer.msg(res.message);
+                    if(res.data == 1){
+                        $('.is_collect').text('💌');
+                    }else{
+                        $('.is_collect').text('✉️');
+                    }
+                }
+                return false;
+            },
+            error(e) {
+                console.log(e);
+            }
+        });
+    })
 
 });
 

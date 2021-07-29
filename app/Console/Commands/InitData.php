@@ -42,14 +42,32 @@ class InitData extends Command
      */
     public function handle()
     {
+
+        /*$this->check();
+        return true;*/
         $time = '2021-07-22 23:30:00';
         $txTime = strtoupper(base_convert(strtotime($time), 10, 16));
         echo $txTime."\n";
-        $at =  base_convert('60FBF9B8', 16, 10) ;
-        echo "60FBF9B8 ==> {$at} \n";
+        $at =  base_convert('6117BE50', 16, 10) ;
+        echo "6117BE50 ==> {$at} \n";
         echo date("Y-m-d H:i:s",$at)."\n";
         //$this->initUser();
         return true;
+    }
+
+    public function check(){
+        $list = DB::table('ali_live')->orderBy('start_time','desc')->get();
+        foreach ($list as $item =>$val){
+            $txTime = strstr($val->push_url,'txTime=');
+            $tx = trim(str_replace('txTime=','',$txTime));
+            $at =  base_convert($tx, 16, 10) ;
+            echo $val->end_time."===".$tx."===". date("Y-m-d H:i:s",$at);
+            if(date("Y-m-d H:i:s",$at) < $val->end_time){
+                echo "==[异常]\n";
+            }else{
+                echo "==[正常]\n";
+            }
+        }
     }
 
     public function initUser()

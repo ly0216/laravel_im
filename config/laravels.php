@@ -111,7 +111,7 @@ return [
         'watch_path' => base_path(),
 
         // The file types that Inotify watches
-        'file_types' => ['.php','.css','.js'],
+        'file_types' => ['.php','.css','.js','.env'],
 
         // The excluded/ignored directories that Inotify watches
         'excluded_dirs' => [],
@@ -190,16 +190,17 @@ return [
     */
 
     'timer' => [
-        'enable' => env('LARAVELS_TIMER', false),
+        'enable' => false,// env('LARAVELS_TIMER', true),
 
         // The list of cron job
         'jobs' => [
             // Enable LaravelScheduleJob to run `php artisan schedule:run` every 1 minute, replace Linux Crontab
             // Hhxsv5\LaravelS\Illuminate\LaravelScheduleJob::class,
+            \App\CronTab\AuctionCronJob::class
         ],
 
         // Max waiting time of reloading
-        'max_wait_time' => 5,
+        'max_wait_time' => 5,//Reload时最大等待时间
 
         // Enable the global lock to ensure that only one instance starts the timer
         // when deploying multiple instances.
@@ -291,7 +292,7 @@ return [
         'dispatch_mode' => env('LARAVELS_DISPATCH_MODE', 2),
         'reactor_num' => env('LARAVELS_REACTOR_NUM', function_exists('swoole_cpu_num') ? swoole_cpu_num() : 8),
         'worker_num' => env('LARAVELS_WORKER_NUM', function_exists('swoole_cpu_num') ? swoole_cpu_num() * 4 : 8),
-        //'task_worker_num'    => env('LARAVELS_TASK_WORKER_NUM', function_exists('swoole_cpu_num') ? swoole_cpu_num() * 4 : 8),
+        'task_worker_num'    => env('LARAVELS_TASK_WORKER_NUM', function_exists('swoole_cpu_num') ? swoole_cpu_num() * 4 : 8),
         'task_ipc_mode' => 1,
         'task_max_request' => env('LARAVELS_TASK_MAX_REQUEST', 100000),
         'task_tmpdir' => @is_writable('/dev/shm/') ? '/dev/shm' : '/tmp',

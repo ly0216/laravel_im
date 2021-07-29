@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>洋式日迹</title>
+    <title>首页-洋式日迹</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
@@ -33,18 +33,18 @@
 
     <div class="layui-row layui-col-space10">
         <div class="layui-col-xs4" id="create_party">
-            <div class="day_tag">创建派对</div>
+            <div class="create_party">🎊创建派对🎊</div>
         </div>
-        <div class="layui-col-xs4" id="party_list">
-            <div class="words">派对列表</div>
+        <div class="layui-col-xs4" id="my_collection">
+            <div class="my_collection">💌我的收藏💌</div>
         </div>
         <div class="layui-col-xs4" id="rand_party">
-            <div class="chat">随机匹配</div>
+            <div class="rand_party">🎭随机匹配🎭</div>
         </div>
     </div>
     <div class="layui-row">
         <div class="layui-col-xs12 text_label_day">
-            热门派对
+            ♨️热门派对
         </div>
     </div>
     <div class="layui-row layui-col-space15" id="flow_list_div">

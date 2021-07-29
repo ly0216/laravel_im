@@ -31,3 +31,7 @@ Route::get('/home/room/{chat_sn?}', function ($chat_sn = 1) {
 Route::get('/home/party/create', function () {
     return view('party.create', ['version' => env('APP_VERSION', '0.0.1')]);
 });
+
+Route::get('/home/my/collection', function () {
+    return view('party.collection', ['version' => env('APP_VERSION', '0.0.1')]);
+});

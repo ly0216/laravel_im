@@ -32,7 +32,7 @@
             <div class="chat_title party_title_text">💬加载中。。。</div>
         </div>
         <div class="layui-col-xs1">
-            <div class="chat_title"></div>
+            <div class="chat_title is_collect">✉️</div>
         </div>
     </div>
     <div class="content" id="content_div">

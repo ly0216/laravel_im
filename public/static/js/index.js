@@ -107,9 +107,9 @@ $(document).ready(function () {
         $('#create_party').on('click',function(){
             location.href = '/home/party/create';
         });
-        //派对列表
-        $('#party_list').on('click',function(){
-            layer.msg('正在努力建设中。。。。',{time:1500});
+        //我的收藏
+        $('#my_collection').on('click',function(){
+            location.href = '/home/my/collection';
         });
         //随机加入派对
         $('#rand_party').on('click',function(){

@@ -111,6 +111,12 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+        'auction' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/auction.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];

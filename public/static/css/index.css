@@ -46,40 +46,40 @@ body{
     height: 90px;
     width: 100%;
 }
-.day_tag{
+.create_party{
     background-color: #5fb878;
-    height: 90px;
+    height: 60px;
     border-radius: 10px;
     text-align: center;
-    line-height: 90px;
+    line-height: 60px;
 
 }
 
 .clock{
 
     background-color: #3d8af2;
-    height: 90px;
+    height: 60px;
     border-radius: 10px;
     text-align: center;
-    line-height: 90px;
+    line-height: 60px;
 
 }
 
-.words{
+.my_collection{
     background-color: #ff6d5e;
-    height: 90px;
+    height: 60px;
     border-radius: 10px;
     text-align: center;
-    line-height: 90px;
+    line-height: 60px;
 
 }
 
-.chat{
+.rand_party{
     background-color: #b55dff;
-    height: 90px;
+    height: 60px;
     border-radius: 10px;
     text-align: center;
-    line-height: 90px;
+    line-height: 60px;
 
 }
 

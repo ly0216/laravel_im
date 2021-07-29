@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,19 +17,27 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });*/
 
-Route::post('login','LoginController@login');
-Route::post('me','LoginController@me');
-Route::post('get/date','ConversationController@getCnDate');
+Route::post('login', 'LoginController@login');
+Route::post('me', 'LoginController@me');
+Route::post('get/date', 'ConversationController@getCnDate');
 
 Route::group(['prefix' => 'home'], function ($router) {
-    Route::post('room/detail','HomeController@roomDetail');
-    Route::post('room/join','HomeController@joinRoom');
-    Route::post('room/history/message','HomeController@historyMessage');
-    Route::post('send/message','HomeController@send');
-    Route::post('room/list','HomeController@roomList');
-    Route::post('my/room/list','HomeController@myRoomList');
-    Route::post('create/party','HomeController@createParty');
-    Route::post('random/join','HomeController@randomJoin');
+    Route::post('room/detail', 'HomeController@roomDetail');
+    Route::post('room/join', 'HomeController@joinRoom');
+    Route::post('room/history/message', 'HomeController@historyMessage');
+    Route::post('send/message', 'HomeController@send');
+    Route::post('room/list', 'HomeController@roomList');
+    Route::post('my/room/list', 'HomeController@myRoomList');
+    Route::post('create/party', 'HomeController@createParty');
+    Route::post('random/join', 'HomeController@randomJoin');
+    Route::post('party/collection', 'HomeController@collection');
+    Route::post('party/collection/list', 'HomeController@collectionList');
+    Route::post('party/collection/del', 'HomeController@collectionDel');
+});
+
+Route::group(['prefix' => 'auction'], function ($router) {
+    Route::post('create', 'AuctionController@create');
+    Route::post('cron/reload', 'AuctionController@reload');
 });
 
 

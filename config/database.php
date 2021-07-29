@@ -90,7 +90,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
-        'mongodb' => [
+        /*'mongodb' => [
             'driver' => 'mongodb',
             'host' => '101.33.76.208',
             'port' => 27017,
@@ -100,6 +100,15 @@ return [
             'options' => [
                 'database' => 'liy_im'
             ]
+        ],*/
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'host' => '127.0.0.1',
+            'port' => 27017,
+            'database' => 'liy_im',
+            'username' => '',
+            'password' => '',
+
         ],
 
 
