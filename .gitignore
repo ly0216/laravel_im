@@ -13,3 +13,4 @@
 /tests
 .idea
 /app/Lib
+storage/laravels-timer-process.pid

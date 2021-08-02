@@ -64,7 +64,12 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
         ],
-
+        'web-image' => [
+            'driver' => 'local',
+            'root' => '/var/www/wwwroot/web.images/storage/app/public',
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
     ],
 
 ];
