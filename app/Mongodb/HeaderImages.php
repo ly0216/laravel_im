@@ -18,6 +18,7 @@ class HeaderImages extends Model
         'title',
         'apply_sex',//适用性别  1男  2女
         'image_url',
+        'image_tail',
         'used_number',
         'created_at',
         'updated_at'

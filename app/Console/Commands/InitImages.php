@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Mongodb\HeaderImages;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -40,15 +41,29 @@ class InitImages extends Command
     {
         $dir = 'images/header';
         $dir_list = Storage::disk('web-image')->allFiles($dir);
+        $at = date("Y-m-d H:i:s");
+        $new_number = 0;
+        $rep_number = 0;
         for ($i = 0; $i < count($dir_list); $i++) {
-            $arr = [
-                'path' => env('IMG_URL') . $dir_list[$i],
-                'dir' => $dir_list[$i]
-            ];
-            $list[] = $arr;
-
+            $has = HeaderImages::where('image_tail',$dir_list[$i])->fisrt();
+            if(!$has){
+                HeaderImages::create([
+                    'title'=>'暂无标题',
+                    'apply_sex'=>2,//适用性别  1男  2女
+                    'image_url'=>env('BASE_IMAGE_URL') . $dir_list[$i],
+                    'image_tail'=>$dir_list[$i],
+                    'used_number'=>1,
+                    'created_at'=>$at,
+                    'updated_at'=>$at
+                ]);
+                $new_number++;
+                echo "新增：【{$dir_list[$i]}】\n";
+            }else{
+                $rep_number++;
+            }
         }
-        var_dump($dir_list);
+        echo "新增【{$new_number}】个头像，有【{$rep_number}】个头像已经存在";
+
         return true;
     }
 }
