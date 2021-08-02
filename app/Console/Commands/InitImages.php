@@ -45,7 +45,7 @@ class InitImages extends Command
         $new_number = 0;
         $rep_number = 0;
         for ($i = 0; $i < count($dir_list); $i++) {
-            $has = HeaderImages::where('image_tail',$dir_list[$i])->fisrt();
+            $has = HeaderImages::where('image_tail',$dir_list[$i])->first();
             if(!$has){
                 HeaderImages::create([
                     'title'=>'暂无标题',
