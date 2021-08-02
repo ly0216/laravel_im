@@ -1,0 +1,73 @@
+
+body{
+    background-color: #0C0C0C;
+}
+
+.chat_title{
+    height: 42px;
+    line-height: 42px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #F8F8F8;
+}
+
+.flow_item{
+    background-color: #c2c2c2;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+.user_avatar img{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+.avatar_number{
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    font-size: 26px;
+    color: #665656;
+}
+.avatar_tip{
+    height: 32px;
+    line-height: 21px;
+    color: #be3939;
+}
+.number_n{
+    color: #5fb878;
+    font-size: 32px;
+}
+.number_m{
+    color: #ff5722;
+    font-size: 32px;
+}
+.upload_btn{
+    margin-top: 3px;
+    width: 65px;
+    height: 70px;
+    text-align: center;
+    border: 1px solid #d2d2d2;
+    border-radius: 5px;
+    background-color: #4b4747;
+}
+.upload_btn span{
+    font-size: 65px;
+    color: #debc97de;
+}
+.tip{
+    font-size: 20px;
+    color: #1e9fff;
+}
+.input_tip{
+    text-align: center;
+}
+
+
+
+
+
+
+
+

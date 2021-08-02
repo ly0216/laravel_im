@@ -184,8 +184,11 @@ $(document).ready(function () {
         //好友申请列表
         $(document).on('click','.tip_number',function(){
             location.href = '/home/apply/list';
+        });
 
-
+        //我的信息详情
+        $(document).on('click','.user_avatar',function(){
+            location.href = '/home/my/info';
         });
 
     });
