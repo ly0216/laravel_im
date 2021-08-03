@@ -62,11 +62,73 @@ body{
 }
 .input_tip{
     text-align: center;
+    height: 32px;
+    line-height: 32px;
 }
 
+.input_text{
+    border: none;
+    width: 290px;
+    height: 32px;
+}
+.input_user_name{
+    border: none;
+    width: 287px;
+    height: 32px;
+    text-indent: 10px;
+}
 
+.input_textarea{
+    border: none;
+}
 
+.input_textarea textarea{
+    border: none;
+    text-indent: 10px;
+    text-decoration-color: #c2c2c2;
+}
 
+.sub_user_base{
+    text-align: center;
+    color: #f0f0f0;
+    background-color: #363434;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.change_password_btn{
+    text-align: center;
+    color: #f0f0f0;
+    background-color: #ff5722;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.sub_change_password{
+    text-align: center;
+    color: #d43559;
+    background-color: #5fb878;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+.avatar_item{
+    text-align: center;
+    background-color: #e6e6e6;
+    border-radius: 15px;
+    margin-bottom: 5px;
+}
+.avatar_item_val img{
+    margin-left: 12px;
+    width: 90px;
+    height: 90px;
+    border-radius: 45px;
+}
 
 
 

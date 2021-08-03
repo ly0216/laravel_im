@@ -9,12 +9,15 @@ use App\Models\MongoDB;
 use App\Mongodb\Collection;
 use App\Mongodb\DaySign;
 use App\Mongodb\FriendApply;
+use App\Mongodb\HeaderImages;
 use App\Mongodb\PartyList;
 use App\Mongodb\PartyMember;
 use App\Mongodb\PartyMessage;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -25,6 +28,135 @@ class HomeController extends Controller
         $this->middleware('check.token');
     }
 
+    /**
+     * 修改密码
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeUserPass(Request $request)
+    {
+        try {
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $key = 'change_user_password_' . $user_id;
+            if (Cache::has($key)) {
+                //return response()->json(['code' => 1, 'message' => '操作太频繁了，稍后再试吧']);
+            } else {
+                Cache::remember($key, 30, function () {
+                    return '1';
+                });
+            }
+            $old_password = $request->post('old_password');
+            $new_password = $request->post('new_password');
+            $rep_password = $request->post('rep_password');
+            if (!$old_password || !$new_password || !$rep_password) {
+                return response()->json(['code' => 1, 'message' => '请将密码信息填写完整']);
+            }
+
+            if ($old_password == $new_password) {
+                return response()->json(['code' => 1, 'message' => '新密码不能与旧密码一样']);
+            }
+
+            if (mb_strlen($new_password) < 6 || mb_strlen($new_password) > 18) {
+                return response()->json(['code' => 1, 'message' => '密码长度必须在6-18位']);
+            }
+
+            if ($new_password != $rep_password) {
+                return response()->json(['code' => 1, 'message' => '两次密码输入不一致']);
+            }
+            $user = DB::table(User::tableName)->where('id', $user_id)->first();
+            $ok = Hash::check($old_password, $user->password);
+            if(!$ok){
+                return response()->json(['code' => 1, 'message' => '旧密码错误']);
+            }
+            $up['updated_at'] = date('Y-m-d H:i:s');
+            $up['password'] = Hash::make($new_password);
+            $res = DB::table(User::tableName)->where('id', $user_id)->update($up);
+            if (!$res) {
+                return response()->json(['code' => 1, 'message' => '修改失败']);
+            }
+            $data = ['ok' => $ok];
+            return response()->json(['code' => 2, 'message' => '成功', 'data' => $data]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 修改基本信息
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeUserInfo(Request $request)
+    {
+        try {
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+            $key = 'change_user_base_info_' . $user_id;
+            if (Cache::has($key)) {
+                return response()->json(['code' => 1, 'message' => '操作太频繁了，稍后再试吧']);
+            } else {
+                Cache::remember($key, 5, function () {
+                    return '1';
+                });
+            }
+            $user_nickname = $request->post('user_nickname');
+            $user_signature = $request->post('user_signature');
+            $user_avatar = $request->post('user_avatar');
+            if (!$user_nickname && !$user_signature) {
+                return response()->json(['code' => 1, 'message' => '请填写要修改的内容']);
+            }
+            $up['updated_at'] = date('Y-m-d H:i:s');
+            if ($user_nickname) {
+                $up['user_nickname'] = $user_nickname;
+            }
+            if ($user_signature) {
+                $up['user_signature'] = $user_signature;
+            }
+            if($user_avatar){
+                $up['user_avatar'] = $user_avatar;
+            }
+
+            $res = DB::table(User::tableName)->where('id', $user_id)->update($up);
+            if (!$res) {
+                return response()->json(['code' => 1, 'message' => '修改失败']);
+            }
+            $data = [];
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $data]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 头像列表
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function avatarList()
+    {
+        try {
+            $user_id = auth('api')->id();
+            if (!$user_id) {
+                return response()->json(['code' => 1, 'message' => '无效的用户']);
+            }
+
+            $man = HeaderImages::select('_id')->where('apply_sex', 1)->count();
+            $girl = HeaderImages::select('_id')->where('apply_sex', 2)->count();
+            $list = HeaderImages::select('apply_sex', 'image_url', 'used_number')->get();
+            $data = [
+                'man' => $man,
+                'girl' => $girl,
+                'list' => $list
+            ];
+            return response()->json(['code' => 0, 'message' => '成功', 'data' => $data]);
+        } catch (\Exception $exception) {
+            return response()->json(['code' => 1, 'message' => $exception->getMessage()]);
+        }
+    }
 
     /**
      * 处理好友申请
@@ -53,7 +185,7 @@ class HomeController extends Controller
             if ($type == 1) {//同意
                 //1.创建私聊会话
                 $list = json_decode($has->user_ids_str, true);
-                foreach ($list as $uid){
+                foreach ($list as $uid) {
                     //2.互相添加好友
                     //3.添加会话成员
                 }

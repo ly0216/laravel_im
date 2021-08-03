@@ -12,7 +12,7 @@ class MemberFd extends Model
     //
     protected $connection = 'mongodb';//连接
     //use SoftDeletes;
-    protected $collection = 'txzh_member_fd';//文档名---可以理解为表名
+    protected $collection = 'liy_member_fd';//文档名---可以理解为表名
     protected $primaryKey = '_id';    //设置 默认使用mongodb的_id 如想想使用自己的ID 可以设置此项
 
 

@@ -37,7 +37,8 @@
     <div class="layui-row layui-col-space15" id="flow_list_div">
         <div class="layui-row flow_item">
             <div class="layui-col-xs3">
-                <div class="user_avatar"><img src="https://images.jobslee.top/storage/images/header/header5.jpeg"></div>
+                <div class="user_avatar"><img id="user_avatar" src="https://images.jobslee.top/storage/images/header/header5.jpeg"></div>
+                <input type="hidden" name="user_avatar" id="user_info_avatar" value="">
             </div>
             <div class="layui-col-xs7">
                 <div class="layui-row avatar_number">
@@ -49,16 +50,25 @@
                 </div>
             </div>
             <div class="layui-col-xs2">
-                <div class="layui-row upload_btn"><span class="layui-icon layui-icon-camera"></span></div>
+                <div class="layui-row upload_btn"><span class="layui-icon layui-icon-carousel show_avatar_list"></span></div>
             </div>
         </div>
+
+        <div class="layui-row layui-col-space15" id="avatar_list_div" style="display: none">
+            {{--<div class="layui-col-xs4 avatar_item" avatar_id="1">
+                <div class="layui-col-xs4 avatar_item_val">
+                    <img src="https://images.jobslee.top/storage/images/header/avatar1.jpg">
+                </div>
+            </div>--}}
+        </div>
+
 
         <div class="layui-row flow_item">
             <div class="layui-col-xs2 input_tip">
                 昵称
             </div>
             <div class="layui-col-xs10 input_text">
-                <input type="text" name="user_name" class="input_user_name" value="" placeholder="填写您的昵称">
+                <input type="text" id="user_nickname" name="user_name" class="input_user_name" value="" placeholder="填写您的昵称">
             </div>
         </div>
         <div class="layui-row flow_item">
@@ -66,20 +76,19 @@
                 签名
             </div>
             <div class="layui-col-xs10 input_textarea">
-                <textarea rows="3" cols="40">请填写您的签名</textarea>
+                <textarea rows="3" id="user_sign" cols="40" placeholder="请填写您的签名"></textarea>
             </div>
         </div>
         <div class="layui-row flow_item">
-            <div class="layui-col-xs2 input_tip"></div>
-            <div class="layui-col-xs10">
-                <div>提交</div>
+            <div class="layui-col-xs12">
+                <div class="sub_user_base" >提&nbsp;&nbsp;&nbsp;&nbsp;交</div>
             </div>
         </div>
 
         <div class="layui-row flow_item">
-            <div class="layui-col-xs2 input_tip"></div>
-            <div class="layui-col-xs10">
-                <div>我要修改密码</div>
+
+            <div class="layui-col-xs12">
+                <div class="change_password_btn">我要修改密码</div>
             </div>
         </div>
         <div class="layui-row flow_item change_password" style="display: none">
@@ -87,7 +96,7 @@
                 旧密码
             </div>
             <div class="layui-col-xs10 input_text">
-                <input type="text" name="user_name" class="input_user_name" value="" placeholder="填写您的昵称">
+                <input type="text" id="old_password" name="old_password" class="input_user_name" value="" placeholder="填写您的昵称">
             </div>
         </div>
         <div class="layui-row flow_item change_password" style="display: none">
@@ -95,7 +104,7 @@
                 新密码
             </div>
             <div class="layui-col-xs10 input_text">
-                <input type="text" name="user_name" class="input_user_name" value="" placeholder="填写您的昵称">
+                <input type="text" id="new_password" name="new_password" class="input_user_name" value="" placeholder="填写您的昵称">
             </div>
         </div>
         <div class="layui-row flow_item change_password" style="display: none">
@@ -103,13 +112,13 @@
                 确认下
             </div>
             <div class="layui-col-xs10 input_text">
-                <input type="text" name="user_name" class="input_user_name" value="" placeholder="填写您的昵称">
+                <input type="text" id="rep_password" name="rep_password" class="input_user_name" value="" placeholder="填写您的昵称">
             </div>
         </div>
         <div class="layui-row flow_item change_password" style="display: none">
-            <div class="layui-col-xs2 input_tip"></div>
-            <div class="layui-col-xs10">
-                <div>修改密码</div>
+
+            <div class="layui-col-xs12">
+                <div class="sub_change_password">修改密码</div>
             </div>
         </div>
     </div>

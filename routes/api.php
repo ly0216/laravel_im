@@ -37,6 +37,9 @@ Route::group(['prefix' => 'home'], function ($router) {
     Route::post('message/number', 'HomeController@messageNumber');
     Route::post('friend/apply/list', 'HomeController@friendApplyList');
     Route::post('friend/apply/do', 'HomeController@friendApplyDo');
+    Route::post('avatar/list', 'HomeController@avatarList');
+    Route::post('change/user/info', 'HomeController@changeUserInfo');
+    Route::post('change/user/pass', 'HomeController@changeUserPass');
 });
 
 Route::group(['prefix' => 'auction'], function ($router) {
