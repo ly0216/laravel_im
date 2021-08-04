@@ -60,11 +60,16 @@ $(document).ready(function () {
                             location.href = '/login';
                         });
                     } else {
-                        let number = res.data;
-                        if(number > 0){
+                        let data = res.data;
+                        if(data.apply_number > 0){
                             $('.message_tip').show();
                             $('.tip_number').text(number);
                         }
+
+                        if(data.message_number > 0){
+                            $('.friend_message_tip').show();
+                        }
+
                     }
                 },
                 error(e) {
@@ -142,6 +147,10 @@ $(document).ready(function () {
         //我的收藏
         $('#my_collection').on('click',function(){
             location.href = '/home/my/collection';
+        });
+        //好友列表
+        $('#my_friend').on('click',function(){
+            location.href = '/home/my/friend';
         });
         //随机加入派对
         $('#rand_party').on('click',function(){

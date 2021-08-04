@@ -43,3 +43,11 @@ Route::get('/home/apply/list', function () {
 Route::get('/home/my/info', function () {
     return view('home.my', ['version' => env('APP_VERSION', '0.0.1')]);
 });
+
+Route::get('/home/my/friend', function () {
+    return view('friend.index', ['version' => env('APP_VERSION', '0.0.1')]);
+});
+
+Route::get('/friend/room/{chat_sn?}', function ($chat_sn = 1) {
+    return view('friend.room', ['chat_sn' => $chat_sn, env('APP_VERSION', '0.0.1')]);
+});

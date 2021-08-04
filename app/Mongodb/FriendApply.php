@@ -19,7 +19,7 @@ class FriendApply extends Model
         'friend_id',
         'friend_nickname',
         'friend_avatar',
-        'status',
+        'status',//2 未处理   1通过
         'created_at',
         'updated_at'
     ];

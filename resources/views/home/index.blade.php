@@ -38,14 +38,17 @@
     </div>
 
     <div class="layui-row layui-col-space10">
-        <div class="layui-col-xs4" id="create_party">
-            <div class="create_party">🎊创建派对🎊</div>
+        <div class="layui-col-xs3" id="create_party">
+            <div class="create_party">创建派对</div>
         </div>
-        <div class="layui-col-xs4" id="my_collection">
-            <div class="my_collection">💌我的收藏💌</div>
+        <div class="layui-col-xs3" id="my_collection">
+            <div class="my_collection">我的收藏</div>
         </div>
-        <div class="layui-col-xs4" id="rand_party">
-            <div class="rand_party">🎭随机匹配🎭</div>
+        <div class="layui-col-xs3" id="my_friend">
+            <div class="my_friend">好友列表<span class="layui-badge-dot friend_message_tip" style="display: none"></span></div>
+        </div>
+        <div class="layui-col-xs3" id="rand_party">
+            <div class="rand_party">随机匹配</div>
         </div>
     </div>
     <div class="layui-row">

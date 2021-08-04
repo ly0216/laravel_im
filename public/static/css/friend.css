@@ -1,0 +1,88 @@
+
+body{
+    background-color: #0C0C0C;
+}
+
+.chat_title{
+    height: 42px;
+    line-height: 42px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #F8F8F8;
+}
+
+.content{
+
+    min-width: 400px;
+    border-radius: 5px;
+    overflow:auto;
+    min-height: 695px;
+}
+
+.flow_item{
+    min-width: 400px;
+    border-radius: 5px;
+    height: 120px;
+    background-color: #7e7e7e;
+    margin-bottom: 5px;
+    z-index: 1;
+}
+
+
+.friend_item{
+    background-color: #7e7e7e;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.user_avatar img{
+    width: 65px;
+    height: 65px;
+    border-radius: 10px;
+}
+
+.item_content{
+    margin-left: 10px;
+}
+.user_nickname{
+    color: #1a1a1a;
+    font-size: 22px;
+    line-height: 22px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
+.last_message{
+    margin-top: 15px;
+    color: #4a4a4a;
+    font-size: 18px;
+    line-height: 18px;
+    height: 18px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
+.unread_number{
+    text-align: center;
+    color: #4a4a4a;
+    margin-top: 5px;
+}
+
+.last_time{
+    text-align: center;
+    color: #4a4a4a;
+    margin-top: 5px;
+}
+.message_tip{
+    height: 65px;
+}
+
+.layui-bg-red{
+    background-color: #e50012!important;
+}
+

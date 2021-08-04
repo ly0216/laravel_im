@@ -3,6 +3,7 @@
 namespace App\Im;
 
 use App\Common\Code;
+use App\Mongodb\Friend;
 use App\Mongodb\MemberFd;
 use App\Mongodb\PartyMember;
 use App\User;
@@ -12,6 +13,22 @@ use Illuminate\Support\Facades\Log;
 class MessagePush extends Model
 {
 
+
+
+    public static function sendPrivate($chat_sn,$message){
+        $list = Friend::where('chat_sn',$chat_sn)->get();
+        $swoole = app('swoole');
+        foreach ($list as $item => $val) {
+            $fd_list = MemberFd::where('user_id', intval($val->user_id))->get();
+            foreach ($fd_list as $fItem => $fVal) {
+                if ($swoole->isEstablished($fVal->fd_id)) {
+                    $swoole->push(intval($fVal->fd_id), json_encode($message));
+                } else {
+                    MemberFd::where('fd_id', intval($fVal->fd_id))->delete();
+                }
+            }
+        }
+    }
 
     /**
      * 发送消息

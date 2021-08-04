@@ -15,18 +15,19 @@ class Friend extends Model
     protected $primaryKey = '_id';    //设置id
 
     protected $fillable = [
-        'id',
         'user_id',
         'user_ids_str',
         'friend_id',
+        'chat_sn',
+        'unread_number',
         'remarks',
         'created_at',
         'updated_at'
     ];
     protected $type = [
-        'id' => 'integer',
         'user_id' => 'integer',
-        'friend_id' => 'integer'
+        'friend_id' => 'integer',
+        'unread_number' => 'integer',
 
     ];
 

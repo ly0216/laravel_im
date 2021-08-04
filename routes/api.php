@@ -33,14 +33,21 @@ Route::group(['prefix' => 'home'], function ($router) {
     Route::post('party/collection', 'HomeController@collection');
     Route::post('party/collection/list', 'HomeController@collectionList');
     Route::post('party/collection/del', 'HomeController@collectionDel');
-    Route::post('friend/apply', 'HomeController@friendApply');
-    Route::post('message/number', 'HomeController@messageNumber');
-    Route::post('friend/apply/list', 'HomeController@friendApplyList');
-    Route::post('friend/apply/do', 'HomeController@friendApplyDo');
+    Route::post('friend/apply', 'FriendController@friendApply');
+    Route::post('message/number', 'FriendController@messageNumber');
+    Route::post('friend/apply/list', 'FriendController@friendApplyList');
+    Route::post('friend/apply/do', 'FriendController@friendApplyDo');
     Route::post('avatar/list', 'HomeController@avatarList');
     Route::post('change/user/info', 'HomeController@changeUserInfo');
     Route::post('change/user/pass', 'HomeController@changeUserPass');
 });
+Route::group(['prefix' => 'friend'], function ($router) {
+    Route::post('list', 'FriendController@friendList');
+    Route::post('room/join', 'FriendController@joinRoom');
+    Route::post('room/history/message', 'FriendController@historyMessage');
+    Route::post('send/message', 'FriendController@sendMessage');
+});
+
 
 Route::group(['prefix' => 'auction'], function ($router) {
     Route::post('create', 'AuctionController@create');

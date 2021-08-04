@@ -53,8 +53,7 @@ body{
 
 }
 
-.clock{
-
+.my_friend{
     background-color: #3d8af2;
     height: 60px;
     border-radius: 10px;
@@ -195,5 +194,10 @@ body{
 .tip_number{
     top: -10px;
     color: #e50012;
+}
+
+.friend_message_tip{
+    background-color: #e50012;
+    float: right;
 }
 

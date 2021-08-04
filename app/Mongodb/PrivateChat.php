@@ -16,14 +16,25 @@ class PrivateChat extends Model
 
     protected $fillable = [
         'chat_sn',
+        'user_id',//发送人的ID
+        'user_name',
+        'user_avatar',
         'user_ids_str',
+        'content',//消息内容
+        'message_type',
+        'content_type',
         'is_delete',
         'created_at',
         'updated_at'
     ];
+
+    protected $json = [
+        'content',
+    ];
     protected $type = [
-        'id' => 'integer',
         'user_id' => 'integer',
+        'message_type' => 'integer',
+        'content_type' => 'integer',
         'is_delete' => 'integer'
 
     ];

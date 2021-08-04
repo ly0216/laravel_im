@@ -65,10 +65,8 @@ class User extends Authenticatable implements JWTSubject
 
     public static function getOne($user_id)
     {
-        return Cache::remember(self::getCacheKey($user_id), env('CACHE_TTL', 300), function () use ($user_id) {
-            return DB::table(self::tableName)->where('id', $user_id)
-                ->where('status', 0)
-                ->where('is_delete', 0)->first();
+        return Cache::remember(self::getCacheKey($user_id), env('CACHE_TTL', 3000), function () use ($user_id) {
+            return DB::table(self::tableName)->where('id', $user_id)->first();
         });
     }
 }
