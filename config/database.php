@@ -92,13 +92,13 @@ return [
         ],
         'mongodb' => [
             'driver' => 'mongodb',
-            'host' => '101.33.76.208',
-            'port' => 27017,
-            'database' => 'liy_im',
-            'username' => 'liyImDBA',
-            'password' => '7ggInXbanBCnh@e#@8bTAp',
+            'host' => env('MONGODB_HOST', '127.0.0.1'),
+            'port' => env('MONGODB_PORT', 27017),
+            'database' => env('MONGODB_DB_NAME', 'liy_im'),
+            'username' => env('MONGODB_USER', 'liy_im'),
+            'password' => env('MONGODB_PASSWORD', 'liy_im'),
             'options' => [
-                'database' => 'liy_im'
+                'database' => env('MONGODB_DB_NAME', 'liy_im')
             ]
         ],
         /*'mongodb' => [
